@@ -14,5 +14,16 @@ export function readQuery(params: Params) {
 export function results(params: Params) {
   const query = readQuery(params);
   const matches = catalog.filter(entry => (!query.category || entry.category === query.category) && (!query.level || entry.level === query.level) && (entry.title + ' ' + entry.summary).toLowerCase().includes(query.q.toLowerCase()));
-  return { query, matches };
+  const pages = Math.max(1, Math.ceil(matches.length / 6));
+  const page = Math.min(query.page, pages);
+  return { query: { ...query, page }, entries: matches.slice((page - 1) * 6, page * 6), count: matches.length, pages };
+}
+
+export function pageUrl(query: ReturnType<typeof readQuery>, page: number) {
+  const params = new URLSearchParams();
+  if (query.q) params.set('q', query.q);
+  if (query.category) params.set('category', query.category);
+  if (query.level) params.set('level', query.level);
+  params.set('page', String(page));
+  return '/?' + params.toString();
 }
