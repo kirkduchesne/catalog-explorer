@@ -1,0 +1,13 @@
+const assert = require('node:assert/strict');
+const {readQuery,results,pageUrl}=require('/tmp/catalog-explorer-tests/query.js');
+assert.equal(results({}).count,24);assert.equal(results({}).entries.length,6);
+assert.equal(results({category:'Python',level:'Beginner'}).count,3);
+assert.equal(results({q:'FILES',category:'Python'}).count,1);
+assert.equal(results({q:'missing'}).count,0);
+assert.equal(results({page:'999'}).query.page,4);
+for(const page of ['-1','1.5','0','1e3','9999999']) assert.equal(readQuery({page}).page,1);
+assert.equal(readQuery({category:'bad',level:'bad'}).category,'');
+assert.equal(readQuery({q:['one','two']}).q,'');
+assert.equal(readQuery({q:'x'.repeat(200)}).q.length,100);
+assert.equal(pageUrl({q:'a & b',category:'CSS',level:'Beginner',page:1},2),'/?q=a+%26+b&category=CSS&level=Beginner&page=2');
+console.log('PASS query validation, combined filters, bounds, pagination and URL encoding');
