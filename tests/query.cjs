@@ -3,7 +3,7 @@ const {readQuery,results,pageUrl}=require('/tmp/catalog-explorer-tests/query.js'
 assert.equal(results({}).count,24);assert.equal(results({}).entries.length,6);
 assert.equal(results({category:'Python',level:'Beginner'}).count,3);
 assert.equal(results({q:'FILES',category:'Python'}).count,1);
-assert.equal(results({q:'missing'}).count,0);
+assert.equal(results({q:'zzzz-not-a-topic'}).count,0);
 assert.equal(results({page:'999'}).query.page,4);
 for(const page of ['-1','1.5','0','1e3','9999999']) assert.equal(readQuery({page}).page,1);
 assert.equal(readQuery({category:'bad',level:'bad'}).category,'');
