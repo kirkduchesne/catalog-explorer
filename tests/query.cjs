@@ -11,3 +11,7 @@ assert.equal(readQuery({q:['one','two']}).q,'');
 assert.equal(readQuery({q:'x'.repeat(200)}).q.length,100);
 assert.equal(pageUrl({q:'a & b',category:'CSS',level:'Beginner',page:1},2),'/?q=a+%26+b&category=CSS&level=Beginner&page=2');
 console.log('PASS query validation, combined filters, bounds, pagination and URL encoding');
+assert.deepEqual(results({category:'Python',level:'Beginner',page:'50'}).entries.map(e=>e.id),[19,21,24]);
+assert.equal(results({q:'zzzz',page:'50'}).query.page,1);
+assert.equal(results({q:'  files  '}).query.q,'files');
+assert.equal(readQuery({page:['1','2']}).page,1);
