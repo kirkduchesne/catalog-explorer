@@ -2,9 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
-  body { @apply bg-stone-100 text-foreground; }
-  label { @apply mb-2 block text-sm font-medium; }
-  select { @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm; }
-  a { @apply text-primary underline underline-offset-4; }
-  a:focus-visible, select:focus-visible, button:focus-visible { @apply outline outline-2 outline-offset-4 outline-amber-700; }
+  body {
+    @apply bg-stone-100 text-foreground;
+  }
+  label {
+    @apply mb-2 block text-sm font-medium;
+  }
+  select {
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm;
+  }
+  a {
+    @apply text-primary underline underline-offset-4;
+  }
+  a:focus-visible,
+  select:focus-visible,
+  button:focus-visible {
+    @apply outline outline-2 outline-offset-4 outline-amber-700;
+  }
 }
