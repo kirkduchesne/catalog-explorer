@@ -27,7 +27,7 @@ export default function Page({ searchParams }: { searchParams: Params }) {
             <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-primary">
               {entry.category} · {entry.level}
             </p>
-            <h2 className="text-xl font-semibold">{entry.title}</h2>
+            <h2 className="text-xl font-semibold"><a href={`/notes/${entry.id}`}>{entry.title}</a></h2>
             <p className="mt-3 leading-relaxed text-stone-600">{entry.summary}</p>
           </li>
         ))}
