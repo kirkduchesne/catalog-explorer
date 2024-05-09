@@ -1,8 +1,14 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { catalog } from '@/lib/catalog';
 
 export function generateStaticParams() {
   return catalog.map((entry) => ({ id: String(entry.id) }));
+}
+
+export function generateMetadata({ params }: { params: { id: string } }): Metadata {
+  const entry = catalog.find((item) => String(item.id) === params.id);
+  return entry ? { title: `${entry.title} | Catalog Explorer`, description: entry.summary } : { title: 'Note not found | Catalog Explorer' };
 }
 
 export default function NotePage({ params }: { params: { id: string } }) {
