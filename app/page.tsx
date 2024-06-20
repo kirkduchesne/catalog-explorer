@@ -1,7 +1,7 @@
 import { pageUrl, results, type Params } from '@/lib/query';
 import { SearchForm } from '@/components/search-form';
 export default function Page({ searchParams }: { searchParams: Params }) {
-  const { query, entries, count, pages } = results(searchParams);
+  const { query, entries, count, pages, facets } = results(searchParams);
   return (
     <main className="mx-auto max-w-5xl p-6">
       <header className="mb-8">
@@ -9,7 +9,7 @@ export default function Page({ searchParams }: { searchParams: Params }) {
         <h1 className="text-4xl font-semibold">Catalog Explorer</h1>
         <p>Browse short, authored notes on everyday programming concepts.</p>
       </header>
-      <SearchForm query={query} />
+      <SearchForm query={query} facets={facets} />
       <div className="mb-4 flex justify-between gap-4">
         <p>
           {count} {count === 1 ? 'note' : 'notes'} found

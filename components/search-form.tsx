@@ -2,7 +2,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { categories, levels } from '@/lib/catalog';
 import { readQuery } from '@/lib/query';
-export function SearchForm({ query }: { query: ReturnType<typeof readQuery> }) {
+export function SearchForm({ query, facets }: { query: ReturnType<typeof readQuery>; facets: { categories: Record<string, number>; levels: Record<string, number> } }) {
   return (
     <form
       action="/"
@@ -18,7 +18,7 @@ export function SearchForm({ query }: { query: ReturnType<typeof readQuery> }) {
         <select id="category" name="category" defaultValue={query.category}>
           <option value="">All topics</option>
           {categories.map((value) => (
-            <option key={value}>{value}</option>
+            <option key={value} value={value}>{value} ({facets.categories[value]})</option>
           ))}
         </select>
       </div>
@@ -27,7 +27,7 @@ export function SearchForm({ query }: { query: ReturnType<typeof readQuery> }) {
         <select id="level" name="level" defaultValue={query.level}>
           <option value="">All levels</option>
           {levels.map((value) => (
-            <option key={value}>{value}</option>
+            <option key={value} value={value}>{value} ({facets.levels[value]})</option>
           ))}
         </select>
       </div>

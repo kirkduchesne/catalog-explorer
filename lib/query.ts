@@ -21,6 +21,11 @@ export function results(params: Params) {
       (!query.level || entry.level === query.level) &&
       (entry.title + ' ' + entry.summary).toLowerCase().includes(query.q.toLowerCase())
   );
+  const textMatches = catalog.filter((entry) => (entry.title + ' ' + entry.summary).toLowerCase().includes(query.q.toLowerCase()));
+  const facets = {
+    categories: Object.fromEntries(categories.map((category) => [category, textMatches.filter((entry) => entry.category === category && (!query.level || entry.level === query.level)).length])),
+    levels: Object.fromEntries(levels.map((level) => [level, textMatches.filter((entry) => entry.level === level && (!query.category || entry.category === query.category)).length])),
+  };
   const pages = Math.max(1, Math.ceil(matches.length / 6));
   const page = Math.min(query.page, pages);
   return {
@@ -28,6 +33,7 @@ export function results(params: Params) {
     entries: matches.slice((page - 1) * 6, page * 6),
     count: matches.length,
     pages,
+    facets,
   };
 }
 
