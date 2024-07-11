@@ -11,7 +11,7 @@ assert.equal(readQuery({ category: 'bad', level: 'bad' }).category, '');
 assert.equal(readQuery({ q: ['one', 'two'] }).q, '');
 assert.equal(readQuery({ q: 'x'.repeat(200) }).q.length, 100);
 assert.equal(
-  pageUrl({ q: 'a & b', category: 'CSS', level: 'Beginner', page: 1 }, 2),
+  pageUrl({ q: 'a & b', category: 'CSS', level: 'Beginner', page: 1, sort: 'default' }, 2),
   '/?q=a+%26+b&category=CSS&level=Beginner&page=2'
 );
 console.log('PASS query validation, combined filters, bounds, pagination and URL encoding');

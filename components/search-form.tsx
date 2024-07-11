@@ -7,7 +7,7 @@ export function SearchForm({ query, facets }: { query: ReturnType<typeof readQue
     <form
       action="/"
       method="get"
-      className="mb-6 grid gap-4 rounded-lg border bg-white p-5 sm:grid-cols-4"
+      className="mb-6 grid gap-4 rounded-lg border bg-white p-5 sm:grid-cols-2 lg:grid-cols-5"
     >
       <div>
         <label htmlFor="q">Search notes</label>
@@ -29,6 +29,14 @@ export function SearchForm({ query, facets }: { query: ReturnType<typeof readQue
           {levels.map((value) => (
             <option key={value} value={value}>{value} ({facets.levels[value]})</option>
           ))}
+        </select>
+      </div>
+      <div>
+        <label htmlFor="sort">Order</label>
+        <select id="sort" name="sort" defaultValue={query.sort}>
+          <option value="default">Reference order</option>
+          <option value="title">Title A–Z</option>
+          <option value="topic">Topic, then title</option>
         </select>
       </div>
       <Button className="self-end" type="submit">

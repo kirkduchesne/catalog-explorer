@@ -11,7 +11,9 @@ export function readQuery(params: Params) {
   const level = levels.find((value) => value === levelValue) || '';
   const rawPage = single(params.page);
   const page = /^\d{1,6}$/.test(rawPage) && Number(rawPage) > 0 ? Number(rawPage) : 1;
-  return { q, category, level, page };
+  const sortValue = single(params.sort);
+  const sort = sortValue === 'title' || sortValue === 'topic' ? sortValue : 'default';
+  return { q, category, level, page, sort };
 }
 export function results(params: Params) {
   const query = readQuery(params);
@@ -21,6 +23,8 @@ export function results(params: Params) {
       (!query.level || entry.level === query.level) &&
       (entry.title + ' ' + entry.summary).toLowerCase().includes(query.q.toLowerCase())
   );
+  if (query.sort === 'title') matches.sort((a, b) => a.title.localeCompare(b.title, 'en') || a.id - b.id);
+  if (query.sort === 'topic') matches.sort((a, b) => a.category.localeCompare(b.category, 'en') || a.title.localeCompare(b.title, 'en') || a.id - b.id);
   const textMatches = catalog.filter((entry) => (entry.title + ' ' + entry.summary).toLowerCase().includes(query.q.toLowerCase()));
   const facets = {
     categories: Object.fromEntries(categories.map((category) => [category, textMatches.filter((entry) => entry.category === category && (!query.level || entry.level === query.level)).length])),
@@ -42,6 +46,7 @@ export function pageUrl(query: ReturnType<typeof readQuery>, page: number) {
   if (query.q) params.set('q', query.q);
   if (query.category) params.set('category', query.category);
   if (query.level) params.set('level', query.level);
+  if (query.sort !== 'default') params.set('sort', query.sort);
   params.set('page', String(page));
   return '/?' + params.toString();
 }
