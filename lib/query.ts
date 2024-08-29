@@ -3,8 +3,11 @@ export type Params = Record<string, string | string[] | undefined>;
 function single(value: string | string[] | undefined) {
   return typeof value === 'string' ? value : '';
 }
+function normalize(value: string) {
+  return value.normalize('NFKC').replace(/\s+/gu, ' ').trim();
+}
 export function readQuery(params: Params) {
-  const q = single(params.q).trim().slice(0, 100);
+  const q = Array.from(normalize(single(params.q))).slice(0, 100).join('');
   const categoryValue = single(params.category);
   const levelValue = single(params.level);
   const category = categories.find((value) => value === categoryValue) || '';
@@ -21,11 +24,11 @@ export function results(params: Params) {
     (entry) =>
       (!query.category || entry.category === query.category) &&
       (!query.level || entry.level === query.level) &&
-      (entry.title + ' ' + entry.summary).toLowerCase().includes(query.q.toLowerCase())
+      normalize(entry.title + ' ' + entry.summary).toLowerCase().includes(query.q.toLowerCase())
   );
   if (query.sort === 'title') matches.sort((a, b) => a.title.localeCompare(b.title, 'en') || a.id - b.id);
   if (query.sort === 'topic') matches.sort((a, b) => a.category.localeCompare(b.category, 'en') || a.title.localeCompare(b.title, 'en') || a.id - b.id);
-  const textMatches = catalog.filter((entry) => (entry.title + ' ' + entry.summary).toLowerCase().includes(query.q.toLowerCase()));
+  const textMatches = catalog.filter((entry) => normalize(entry.title + ' ' + entry.summary).toLowerCase().includes(query.q.toLowerCase()));
   const facets = {
     categories: Object.fromEntries(categories.map((category) => [category, textMatches.filter((entry) => entry.category === category && (!query.level || entry.level === query.level)).length])),
     levels: Object.fromEntries(levels.map((level) => [level, textMatches.filter((entry) => entry.level === level && (!query.category || entry.category === query.category)).length])),

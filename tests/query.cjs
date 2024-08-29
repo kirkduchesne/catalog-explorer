@@ -22,3 +22,10 @@ assert.deepEqual(
 assert.equal(results({ q: 'zzzz', page: '50' }).query.page, 1);
 assert.equal(results({ q: '  files  ' }).query.q, 'files');
 assert.equal(readQuery({ page: ['1', '2'] }).page, 1);
+
+assert.equal(readQuery({ q: '  ＦＩＬＥＳ  ' }).q, 'FILES');
+assert.equal(results({ q: 'ＦＩＬＥＳ' }).count, 1);
+assert.equal(readQuery({ q: 'event   listeners' }).q, 'event listeners');
+assert.equal(Array.from(readQuery({ q: '😀'.repeat(101) }).q).length, 100);
+assert.equal(readQuery({ sort: ['title', 'topic'] }).sort, 'default');
+assert.equal(readQuery({ sort: 'unknown' }).sort, 'default');
