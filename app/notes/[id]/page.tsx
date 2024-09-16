@@ -15,7 +15,7 @@ export default function NotePage({ params }: { params: { id: string } }) {
   const entry = catalog.find((item) => String(item.id) === params.id);
   if (!entry) notFound();
   return (
-    <main className="mx-auto max-w-3xl p-6">
+    <main id="main-content" className="mx-auto max-w-3xl p-6">
       <a href="/">Back to catalog</a>
       <p className="mt-8 text-sm font-semibold text-primary">{entry.category} · {entry.level}</p>
       <h1 className="mt-3 text-3xl font-semibold">{entry.title}</h1>

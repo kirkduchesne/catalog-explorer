@@ -3,7 +3,7 @@ import { SearchForm } from '@/components/search-form';
 export default function Page({ searchParams }: { searchParams: Params }) {
   const { query, entries, count, pages, facets } = results(searchParams);
   return (
-    <main className="mx-auto max-w-5xl p-6">
+    <main id="main-content" className="mx-auto max-w-5xl p-6">
       <header className="mb-8">
         <p>A programming reference shelf</p>
         <h1 className="text-4xl font-semibold">Catalog Explorer</h1>
@@ -32,11 +32,12 @@ export default function Page({ searchParams }: { searchParams: Params }) {
           </li>
         ))}
       </ul>
-      <nav aria-label="Results pages" className="mt-6 flex items-center justify-between">
+      <nav aria-label="Results pages" className="mt-6 flex flex-wrap items-center justify-center gap-4">
         {query.page > 1 ? <a href={pageUrl(query, query.page - 1)}>Previous</a> : <span />}
-        <span>
-          Page {query.page} of {pages}
-        </span>
+        {Array.from({ length: pages }, (_, index) => index + 1).map((page) => (
+          <a key={page} href={pageUrl(query, page)} aria-current={page === query.page ? 'page' : undefined} aria-label={`Page ${page}`} className="rounded border bg-white px-3 py-2 aria-[current=page]:font-bold">{page}</a>
+        ))}
+        <span className="w-full text-center text-sm">Page {query.page} of {pages}</span>
         {query.page < pages ? <a href={pageUrl(query, query.page + 1)}>Next</a> : <span />}
       </nav>
     </main>
