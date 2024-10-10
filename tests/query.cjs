@@ -29,3 +29,15 @@ assert.equal(readQuery({ q: 'event   listeners' }).q, 'event listeners');
 assert.equal(Array.from(readQuery({ q: '😀'.repeat(101) }).q).length, 100);
 assert.equal(readQuery({ sort: ['title', 'topic'] }).sort, 'default');
 assert.equal(readQuery({ sort: 'unknown' }).sort, 'default');
+
+assert.equal(results({ category: 'Python', level: 'Beginner' }).facets.categories.Python, 3);
+assert.equal(results({ category: 'Python', level: 'Beginner' }).facets.levels.Intermediate, 3);
+assert.equal(results({ q: 'files', category: 'CSS' }).facets.categories.Python, 1);
+assert.equal(results({ q: 'files', category: 'CSS' }).count, 0);
+const alphabetical = results({ sort: 'title' });
+assert.equal(alphabetical.entries[0].title, 'Argument parsing');
+assert.equal(results({ sort: 'title', page: '2' }).entries.length, 6);
+assert.ok(pageUrl(readQuery({ q: 'a & b', sort: 'title' }), 2).includes('sort=title'));
+assert.deepEqual(results({}).entries.map((entry) => entry.id), [1, 2, 3, 4, 5, 6]);
+for (const value of ['Infinity', 'NaN', '1e2', '999999999999']) assert.equal(readQuery({ page: value }).page, 1);
+console.log('PASS contextual facets, unicode, ordering and direct URL edge cases');
