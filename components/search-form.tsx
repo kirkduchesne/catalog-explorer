@@ -2,7 +2,16 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { categories, levels } from '@/lib/catalog';
 import { readQuery } from '@/lib/query';
-export function SearchForm({ query, facets }: { query: ReturnType<typeof readQuery>; facets: { categories: Record<string, number>; levels: Record<string, number> } }) {
+export function SearchForm({
+  query,
+  facets,
+}: {
+  query: ReturnType<typeof readQuery>;
+  facets: {
+    categories: Record<string, number>;
+    levels: Record<string, number>;
+  };
+}) {
   return (
     <form
       action="/"
@@ -11,14 +20,17 @@ export function SearchForm({ query, facets }: { query: ReturnType<typeof readQue
     >
       <div>
         <label htmlFor="q">Search notes</label>
-        <Input id="q" name="q" defaultValue={query.q} maxLength={100} />
+        <Input id="q" name="q" defaultValue={query.q} aria-describedby="search-help" />
+        <p id="search-help" className="mt-2 text-xs">Search uses the first 100 characters after normalization.</p>
       </div>
       <div>
         <label htmlFor="category">Topic</label>
         <select id="category" name="category" defaultValue={query.category}>
           <option value="">All topics</option>
           {categories.map((value) => (
-            <option key={value} value={value}>{value} ({facets.categories[value]})</option>
+            <option key={value} value={value}>
+              {value} ({facets.categories[value]})
+            </option>
           ))}
         </select>
       </div>
@@ -27,7 +39,9 @@ export function SearchForm({ query, facets }: { query: ReturnType<typeof readQue
         <select id="level" name="level" defaultValue={query.level}>
           <option value="">All levels</option>
           {levels.map((value) => (
-            <option key={value} value={value}>{value} ({facets.levels[value]})</option>
+            <option key={value} value={value}>
+              {value} ({facets.levels[value]})
+            </option>
           ))}
         </select>
       </div>

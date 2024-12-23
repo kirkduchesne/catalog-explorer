@@ -41,3 +41,8 @@ assert.ok(pageUrl(readQuery({ q: 'a & b', sort: 'title' }), 2).includes('sort=ti
 assert.deepEqual(results({}).entries.map((entry) => entry.id), [1, 2, 3, 4, 5, 6]);
 for (const value of ['Infinity', 'NaN', '1e2', '999999999999']) assert.equal(readQuery({ page: value }).page, 1);
 console.log('PASS contextual facets, unicode, ordering and direct URL edge cases');
+
+const nonBmpQuery = '😀'.repeat(100);
+assert.equal(readQuery({ q: nonBmpQuery }).q, nonBmpQuery);
+assert.equal(readQuery({ q: nonBmpQuery + 'a' }).q, nonBmpQuery);
+assert.equal(new URL(pageUrl(readQuery({ q: nonBmpQuery }), 1), 'https://example.test').searchParams.get('q'), nonBmpQuery);

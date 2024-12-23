@@ -7,15 +7,19 @@ function normalize(value: string) {
   return value.normalize('NFKC').replace(/\s+/gu, ' ').trim();
 }
 export function readQuery(params: Params) {
-  const q = Array.from(normalize(single(params.q))).slice(0, 100).join('');
+  const q = Array.from(normalize(single(params.q)))
+    .slice(0, 100)
+    .join('');
   const categoryValue = single(params.category);
   const levelValue = single(params.level);
   const category = categories.find((value) => value === categoryValue) || '';
   const level = levels.find((value) => value === levelValue) || '';
   const rawPage = single(params.page);
-  const page = /^\d{1,6}$/.test(rawPage) && Number(rawPage) > 0 ? Number(rawPage) : 1;
+  const page =
+    /^\d{1,6}$/.test(rawPage) && Number(rawPage) > 0 ? Number(rawPage) : 1;
   const sortValue = single(params.sort);
-  const sort = sortValue === 'title' || sortValue === 'topic' ? sortValue : 'default';
+  const sort =
+    sortValue === 'title' || sortValue === 'topic' ? sortValue : 'default';
   return { q, category, level, page, sort };
 }
 export function results(params: Params) {
@@ -24,14 +28,45 @@ export function results(params: Params) {
     (entry) =>
       (!query.category || entry.category === query.category) &&
       (!query.level || entry.level === query.level) &&
-      normalize(entry.title + ' ' + entry.summary).toLowerCase().includes(query.q.toLowerCase())
+      normalize(entry.title + ' ' + entry.summary)
+        .toLowerCase()
+        .includes(query.q.toLowerCase())
   );
-  if (query.sort === 'title') matches.sort((a, b) => a.title.localeCompare(b.title, 'en') || a.id - b.id);
-  if (query.sort === 'topic') matches.sort((a, b) => a.category.localeCompare(b.category, 'en') || a.title.localeCompare(b.title, 'en') || a.id - b.id);
-  const textMatches = catalog.filter((entry) => normalize(entry.title + ' ' + entry.summary).toLowerCase().includes(query.q.toLowerCase()));
+  if (query.sort === 'title')
+    matches.sort((a, b) => a.title.localeCompare(b.title, 'en') || a.id - b.id);
+  if (query.sort === 'topic')
+    matches.sort(
+      (a, b) =>
+        a.category.localeCompare(b.category, 'en') ||
+        a.title.localeCompare(b.title, 'en') ||
+        a.id - b.id
+    );
+  const textMatches = catalog.filter((entry) =>
+    normalize(entry.title + ' ' + entry.summary)
+      .toLowerCase()
+      .includes(query.q.toLowerCase())
+  );
   const facets = {
-    categories: Object.fromEntries(categories.map((category) => [category, textMatches.filter((entry) => entry.category === category && (!query.level || entry.level === query.level)).length])),
-    levels: Object.fromEntries(levels.map((level) => [level, textMatches.filter((entry) => entry.level === level && (!query.category || entry.category === query.category)).length])),
+    categories: Object.fromEntries(
+      categories.map((category) => [
+        category,
+        textMatches.filter(
+          (entry) =>
+            entry.category === category &&
+            (!query.level || entry.level === query.level)
+        ).length,
+      ])
+    ),
+    levels: Object.fromEntries(
+      levels.map((level) => [
+        level,
+        textMatches.filter(
+          (entry) =>
+            entry.level === level &&
+            (!query.category || entry.category === query.category)
+        ).length,
+      ])
+    ),
   };
   const pages = Math.max(1, Math.ceil(matches.length / 6));
   const page = Math.min(query.page, pages);
