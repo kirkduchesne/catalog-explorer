@@ -8,19 +8,21 @@ export function generateStaticParams() {
   return catalog.map((entry) => ({ id: String(entry.id) }));
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
-}): Metadata {
-  const entry = catalog.find((item) => String(item.id) === params.id);
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const entry = catalog.find((item) => String(item.id) === id);
   return entry
     ? { title: `${entry.title} | Catalog Explorer`, description: entry.summary }
     : { title: 'Note not found | Catalog Explorer' };
 }
 
-export default function NotePage({ params }: { params: { id: string } }) {
-  const entry = catalog.find((item) => String(item.id) === params.id);
+export default async function NotePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const entry = catalog.find((item) => String(item.id) === id);
   if (!entry) notFound();
   return (
     <main id="main-content" className="mx-auto max-w-3xl p-6">

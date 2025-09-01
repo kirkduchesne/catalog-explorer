@@ -1,5 +1,5 @@
 const assert = require('node:assert/strict');
-const { readQuery, results, pageUrl } = require('/tmp/catalog-explorer-tests/query.js');
+const { readQuery, results, pageUrl } = require('/tmp/catalog-explorer-2025-tests/query.js');
 assert.equal(results({}).count, 24);
 assert.equal(results({}).entries.length, 6);
 assert.equal(results({ category: 'Python', level: 'Beginner' }).count, 3);

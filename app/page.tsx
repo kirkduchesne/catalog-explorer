@@ -1,7 +1,7 @@
 import { pageUrl, results, type Params } from '@/lib/query';
 import { SearchForm } from '@/components/search-form';
-export default function Page({ searchParams }: { searchParams: Params }) {
-  const { query, entries, count, pages, facets } = results(searchParams);
+export default async function Page({ searchParams }: { searchParams: Promise<Params> }) {
+  const { query, entries, count, pages, facets } = results(await searchParams);
   return (
     <main id="main-content" className="mx-auto max-w-5xl p-6">
       <header className="mb-8">
