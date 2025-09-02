@@ -1,3 +1,4 @@
+import { validateCatalog } from './content-validation';
 export const categories = ['HTML', 'CSS', 'JavaScript', 'Python'] as const;
 export const levels = ['Beginner', 'Intermediate'] as const;
 export type Entry = { id: number; title: string; category: string; level: string; summary: string };
@@ -172,3 +173,5 @@ export const catalog: Entry[] = [
     summary: 'Use pathlib to work with file paths without manual separator concatenation.',
   },
 ];
+
+validateCatalog(catalog, categories, levels);
