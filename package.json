@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "tsc lib/*.ts --outDir /tmp/catalog-explorer-2025-tests --module commonjs --target es2020 --skipLibCheck && node --test tests/query.cjs"
+    "test": "tsc lib/*.ts --outDir /tmp/catalog-explorer-2025-tests --module commonjs --target es2020 --skipLibCheck && node --test tests/query.cjs tests/content.cjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.2.3",
