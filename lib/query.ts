@@ -20,7 +20,12 @@ export function readQuery(params: Params) {
   const sortValue = single(params.sort);
   const sort =
     sortValue === 'title' || sortValue === 'topic' ? sortValue : 'default';
-  return { q, category, level, page, sort };
+  const mode = single(params.mode) === 'words' ? 'words' : 'phrase';
+  return { q, category, level, page, sort, mode };
+}
+function matchesText(entry: typeof catalog[number], q: string, mode: string) {
+  const text = normalize(entry.title + ' ' + entry.summary).toLowerCase();
+  return mode === 'words' ? q.toLowerCase().split(' ').every((word) => text.includes(word)) : text.includes(q.toLowerCase());
 }
 export function results(params: Params) {
   const query = readQuery(params);
@@ -28,9 +33,7 @@ export function results(params: Params) {
     (entry) =>
       (!query.category || entry.category === query.category) &&
       (!query.level || entry.level === query.level) &&
-      normalize(entry.title + ' ' + entry.summary)
-        .toLowerCase()
-        .includes(query.q.toLowerCase())
+      matchesText(entry, query.q, query.mode)
   );
   if (query.sort === 'title')
     matches.sort((a, b) => a.title.localeCompare(b.title, 'en') || a.id - b.id);
@@ -42,9 +45,7 @@ export function results(params: Params) {
         a.id - b.id
     );
   const textMatches = catalog.filter((entry) =>
-    normalize(entry.title + ' ' + entry.summary)
-      .toLowerCase()
-      .includes(query.q.toLowerCase())
+    matchesText(entry, query.q, query.mode)
   );
   const facets = {
     categories: Object.fromEntries(
@@ -85,6 +86,7 @@ export function pageUrl(query: ReturnType<typeof readQuery>, page: number) {
   if (query.category) params.set('category', query.category);
   if (query.level) params.set('level', query.level);
   if (query.sort !== 'default') params.set('sort', query.sort);
+  if (query.mode === 'words') params.set('mode', query.mode);
   params.set('page', String(page));
   return '/?' + params.toString();
 }

@@ -46,3 +46,7 @@ const nonBmpQuery = '😀'.repeat(100);
 assert.equal(readQuery({ q: nonBmpQuery }).q, nonBmpQuery);
 assert.equal(readQuery({ q: nonBmpQuery + 'a' }).q, nonBmpQuery);
 assert.equal(new URL(pageUrl(readQuery({ q: nonBmpQuery }), 1), 'https://example.test').searchParams.get('q'), nonBmpQuery);
+
+assert.equal(results({q:'files close',mode:'words'}).count,1);
+assert.equal(results({q:'files close'}).count,0);
+assert.equal(readQuery({mode:['words','phrase']}).mode,'phrase');
