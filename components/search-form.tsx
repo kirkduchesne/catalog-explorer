@@ -24,6 +24,10 @@ export function SearchForm({
         <p id="search-help" className="mt-2 text-xs">Search uses the first 100 characters after normalization.</p>
       </div>
       <div>
+        <label htmlFor="mode">Match</label>
+        <select id="mode" name="mode" defaultValue={query.mode}><option value="phrase">Exact phrase</option><option value="words">All words</option></select>
+      </div>
+      <div>
         <label htmlFor="category">Topic</label>
         <select id="category" name="category" defaultValue={query.category}>
           <option value="">All topics</option>
