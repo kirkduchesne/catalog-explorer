@@ -55,3 +55,5 @@ assert.ok(pageUrl(readQuery({mode:'words'}),2).includes('mode=words'));
 
 assert.equal(readQuery({mode:'invalid'}).mode,'phrase');
 assert.equal(results({q:'files close',mode:'words',page:'20'}).query.page,1);
+
+assert.equal(results({sort:'title-desc'}).entries[0].title,'Visible focus');

@@ -19,7 +19,7 @@ export function readQuery(params: Params) {
     /^\d{1,6}$/.test(rawPage) && Number(rawPage) > 0 ? Number(rawPage) : 1;
   const sortValue = single(params.sort);
   const sort =
-    sortValue === 'title' || sortValue === 'topic' ? sortValue : 'default';
+    sortValue === 'title' || sortValue === 'topic' || sortValue === 'title-desc' ? sortValue : 'default';
   const mode = single(params.mode) === 'words' ? 'words' : 'phrase';
   return { q, category, level, page, sort, mode };
 }
@@ -37,6 +37,7 @@ export function results(params: Params) {
   );
   if (query.sort === 'title')
     matches.sort((a, b) => a.title.localeCompare(b.title, 'en') || a.id - b.id);
+  if (query.sort === 'title-desc') matches.sort((a,b) => b.title.localeCompare(a.title,'en') || a.id-b.id);
   if (query.sort === 'topic')
     matches.sort(
       (a, b) =>
