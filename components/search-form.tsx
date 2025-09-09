@@ -54,6 +54,7 @@ export function SearchForm({
         <select id="sort" name="sort" defaultValue={query.sort}>
           <option value="default">Reference order</option>
           <option value="title">Title A–Z</option>
+          <option value="title-desc">Title Z–A</option>
           <option value="topic">Topic, then title</option>
         </select>
       </div>
