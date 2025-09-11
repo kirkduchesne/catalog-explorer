@@ -21,7 +21,8 @@ export function readQuery(params: Params) {
   const sort =
     sortValue === 'title' || sortValue === 'topic' || sortValue === 'title-desc' ? sortValue : 'default';
   const mode = single(params.mode) === 'words' ? 'words' : 'phrase';
-  return { q, category, level, page, sort, mode };
+  const size = single(params.size) === '12' ? 12 : 6;
+  return { q, category, level, page, sort, mode, size };
 }
 function matchesText(entry: typeof catalog[number], q: string, mode: string) {
   const text = normalize(entry.title + ' ' + entry.summary).toLowerCase();
@@ -70,11 +71,11 @@ export function results(params: Params) {
       ])
     ),
   };
-  const pages = Math.max(1, Math.ceil(matches.length / 6));
+  const pages = Math.max(1, Math.ceil(matches.length / query.size));
   const page = Math.min(query.page, pages);
   return {
     query: { ...query, page },
-    entries: matches.slice((page - 1) * 6, page * 6),
+    entries: matches.slice((page - 1) * query.size, page * query.size),
     count: matches.length,
     pages,
     facets,
@@ -88,6 +89,7 @@ export function pageUrl(query: ReturnType<typeof readQuery>, page: number) {
   if (query.level) params.set('level', query.level);
   if (query.sort !== 'default') params.set('sort', query.sort);
   if (query.mode === 'words') params.set('mode', query.mode);
+  if (query.size === 12) params.set('size','12');
   params.set('page', String(page));
   return '/?' + params.toString();
 }
