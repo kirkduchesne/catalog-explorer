@@ -58,6 +58,7 @@ export function SearchForm({
           <option value="topic">Topic, then title</option>
         </select>
       </div>
+      <div><label htmlFor="size">Notes per page</label><select id="size" name="size" defaultValue={query.size}><option value="6">6 notes</option><option value="12">12 notes</option></select></div>
       <Button className="self-end" type="submit">
         Apply filters
       </Button>
