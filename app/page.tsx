@@ -1,3 +1,4 @@
+import { ActiveFilters } from '@/components/active-filters';
 import { pageUrl, results, type Params } from '@/lib/query';
 import { SearchForm } from '@/components/search-form';
 export default async function Page({ searchParams }: { searchParams: Promise<Params> }) {
@@ -10,6 +11,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Par
         <p>Browse short, authored notes on everyday programming concepts.</p>
       </header>
       <SearchForm query={query} facets={facets} />
+      <ActiveFilters query={query} />
       <div className="mb-4 flex justify-between gap-4">
         <p>
           {count} {count === 1 ? 'note' : 'notes'} found · Showing {start}–{end}
