@@ -1,7 +1,7 @@
 import { pageUrl, results, type Params } from '@/lib/query';
 import { SearchForm } from '@/components/search-form';
 export default async function Page({ searchParams }: { searchParams: Promise<Params> }) {
-  const { query, entries, count, pages, facets } = results(await searchParams);
+  const { query, entries, count, pages, facets, start, end, pageAdjusted } = results(await searchParams);
   return (
     <main id="main-content" className="mx-auto max-w-5xl p-6">
       <header className="mb-8">
@@ -12,10 +12,11 @@ export default async function Page({ searchParams }: { searchParams: Promise<Par
       <SearchForm query={query} facets={facets} />
       <div className="mb-4 flex justify-between gap-4">
         <p>
-          {count} {count === 1 ? 'note' : 'notes'} found
+          {count} {count === 1 ? 'note' : 'notes'} found · Showing {start}–{end}
         </p>
         <a href="/">Clear filters</a>
       </div>
+      {pageAdjusted ? <p className="mb-4">That page is outside these results. Showing the last available page.</p> : null}
       {!count ? (
         <p className="rounded-lg border bg-white p-6">
           No notes match these filters. Try a broader search or clear the

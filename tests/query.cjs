@@ -61,3 +61,7 @@ assert.equal(results({sort:'title-desc'}).entries[0].title,'Visible focus');
 assert.equal(results({size:'12'}).entries.length,12);
 assert.equal(results({size:'12'}).pages,2);
 assert.equal(readQuery({size:'100'}).size,6);
+
+assert.equal(results({page:'99'}).start,19);
+assert.equal(results({q:'zzzz'}).start,0);
+assert.equal(results({page:'99'}).pageAdjusted,true);

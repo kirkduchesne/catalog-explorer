@@ -77,6 +77,9 @@ export function results(params: Params) {
     query: { ...query, page },
     entries: matches.slice((page - 1) * query.size, page * query.size),
     count: matches.length,
+    start: matches.length ? (page - 1) * query.size + 1 : 0,
+    end: Math.min(page * query.size, matches.length),
+    pageAdjusted: page !== query.page,
     pages,
     facets,
   };
