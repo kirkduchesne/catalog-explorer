@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { categories, levels } from '@/lib/catalog';
-import { readQuery } from '@/lib/query';
+import { readQuery, pageUrl } from '@/lib/query';
 export function SearchForm({
   query,
   facets,
@@ -62,6 +62,7 @@ export function SearchForm({
       <Button className="self-end" type="submit">
         Apply filters
       </Button>
+      {query.q ? <a href={pageUrl({...query,q:''},1)} className="self-end">Clear search only</a> : null}
     </form>
   );
 }
