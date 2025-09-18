@@ -65,3 +65,9 @@ assert.equal(readQuery({size:'100'}).size,6);
 assert.equal(results({page:'99'}).start,19);
 assert.equal(results({q:'zzzz'}).start,0);
 assert.equal(results({page:'99'}).pageAdjusted,true);
+
+const composed=readQuery({q:'files',mode:'words',size:'12',sort:'title-desc',category:'Python',level:'Intermediate'});
+const kept=pageUrl({...composed,q:''},1);
+assert.ok(kept.includes('category=Python')&&kept.includes('size=12')&&kept.includes('mode=words'));
+assert.equal(results({q:'close files',mode:'words',category:'Python',level:'Intermediate',size:'12'}).count,1);
+assert.equal(results({q:'close files',mode:'words',category:'CSS'}).count,0);
