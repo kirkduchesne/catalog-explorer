@@ -1,3 +1,4 @@
+import { detailUrl } from '@/lib/navigation';
 import { ActiveFilters } from '@/components/active-filters';
 import { pageUrl, results, type Params } from '@/lib/query';
 import { SearchForm } from '@/components/search-form';
@@ -35,7 +36,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Par
               {entry.category} · {entry.level}
             </p>
             <h2 className="text-xl font-semibold">
-              <a href={`/notes/${entry.id}`}>{entry.title}</a>
+              <a href={detailUrl(entry.id,pageUrl(query,query.page))}>{entry.title}</a>
             </h2>
             <p className="mt-3 leading-relaxed text-stone-600">
               {entry.summary}
