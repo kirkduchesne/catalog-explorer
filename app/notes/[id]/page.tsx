@@ -1,3 +1,4 @@
+import { safeReturn, detailUrl } from '@/lib/navigation';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { catalog } from '@/lib/catalog';
@@ -20,13 +21,14 @@ export async function generateMetadata({
     : { title: 'Note not found | Catalog Explorer' };
 }
 
-export default async function NotePage({ params }: { params: Promise<{ id: string }> }) {
+export default async function NotePage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{back?:string|string[]}> }) {
+  const back = safeReturn((await searchParams).back);
   const { id } = await params;
   const entry = catalog.find((item) => String(item.id) === id);
   if (!entry) notFound();
   return (
     <main id="main-content" className="mx-auto max-w-3xl p-6">
-      <a href="/">Back to catalog</a>
+      <a href={back}>Back to results</a>
       <p className="mt-8 text-sm font-semibold text-primary">
         {entry.category} · {entry.level}
       </p>
