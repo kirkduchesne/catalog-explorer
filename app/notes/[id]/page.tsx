@@ -26,6 +26,10 @@ export default async function NotePage({ params, searchParams }: { params: Promi
   const { id } = await params;
   const entry = catalog.find((item) => String(item.id) === id);
   if (!entry) notFound();
+  const topic = catalog.filter((item) => item.category === entry.category);
+  const position = topic.findIndex((item) => item.id === entry.id);
+  const previous = topic[position - 1];
+  const next = topic[position + 1];
   return (
     <main id="main-content" className="mx-auto max-w-3xl p-6">
       <a href={back}>Back to results</a>
@@ -38,6 +42,10 @@ export default async function NotePage({ params, searchParams }: { params: Promi
         Use this short reference as a starting point when reviewing your own
         code.
       </p>
+      <nav aria-label="Same topic reading order" className="mt-8 grid gap-4 border-t pt-4 sm:grid-cols-2">
+        {previous ? <a href={detailUrl(previous.id,back)} rel="prev">Previous: {previous.title}</a> : <span />}
+        {next ? <a href={detailUrl(next.id,back)} rel="next">Next: {next.title}</a> : null}
+      </nav>
     </main>
   );
 }
