@@ -18,6 +18,7 @@ export function SearchForm({
       method="get"
       className="mb-6 grid gap-4 rounded-lg border bg-white p-5 sm:grid-cols-2 lg:grid-cols-5"
     >
+      <fieldset className="contents"><legend className="sr-only">Search and browse the reference catalog</legend>
       <div>
         <label htmlFor="q">Search notes</label>
         <Input id="q" name="q" defaultValue={query.q} aria-describedby="search-help" />
@@ -29,7 +30,7 @@ export function SearchForm({
       </div>
       <div>
         <label htmlFor="category">Topic</label>
-        <select id="category" name="category" defaultValue={query.category}>
+        <select id="category" aria-describedby="facet-help" name="category" defaultValue={query.category}>
           <option value="">All topics</option>
           {categories.map((value) => (
             <option key={value} value={value}>
@@ -40,7 +41,7 @@ export function SearchForm({
       </div>
       <div>
         <label htmlFor="level">Level</label>
-        <select id="level" name="level" defaultValue={query.level}>
+        <select id="level" aria-describedby="facet-help" name="level" defaultValue={query.level}>
           <option value="">All levels</option>
           {levels.map((value) => (
             <option key={value} value={value}>
@@ -63,6 +64,8 @@ export function SearchForm({
         Apply filters
       </Button>
       {query.q ? <a href={pageUrl({...query,q:''},1)} className="self-end">Clear search only</a> : null}
+      <p id="facet-help" className="text-xs sm:col-span-2">Topic counts respect search and level; level counts respect search and topic.</p>
+      </fieldset>
     </form>
   );
 }
