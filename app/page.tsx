@@ -27,8 +27,10 @@ export default async function Page({ searchParams }: { searchParams: Promise<Par
       {pageAdjusted ? <p className="mb-4">That page is outside these results. Showing the last available page.</p> : null}
       {!count ? (
         <p className="rounded-lg border bg-white p-6">
-          No notes match these filters. Try a broader search or clear the
-          filters.
+          No notes match these filters. Try a broader search or clear the filters.
+          {query.q ? <a className="mt-3 block" href={pageUrl({...query,q:''},1)}>Try without the search text</a> : null}
+          {query.category ? <a className="mt-3 block" href={pageUrl({...query,category:''},1)}>Try all topics</a> : null}
+          {query.level ? <a className="mt-3 block" href={pageUrl({...query,level:''},1)}>Try all levels</a> : null}
         </p>
       ) : null}
       <ul className="grid gap-4 sm:grid-cols-2">
