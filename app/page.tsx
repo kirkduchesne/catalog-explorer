@@ -18,7 +18,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<Par
       </header>
       <SearchForm query={query} facets={facets} />
       <ActiveFilters query={query} />
-      <div className="mb-4 flex justify-between gap-4">
+      <div id="results" tabIndex={-1} className="mb-4 flex justify-between gap-4 scroll-mt-4">
         <p>
           {count} {count === 1 ? 'note' : 'notes'} found · Showing {start}–{end}
         </p>

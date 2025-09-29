@@ -14,7 +14,7 @@ export function SearchForm({
 }) {
   return (
     <form
-      action="/"
+      action="/#results"
       method="get"
       className="mb-6 grid gap-4 rounded-lg border bg-white p-5 sm:grid-cols-2 lg:grid-cols-5"
     >
