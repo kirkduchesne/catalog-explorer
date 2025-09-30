@@ -55,8 +55,9 @@ export default async function Page({ searchParams }: { searchParams: Promise<Par
         aria-label="Results pages"
         className="mt-6 flex flex-wrap items-center justify-center gap-4"
       >
+        {query.page > 2 ? <a href={pageUrl(query,1)}>First page</a> : null}
         {query.page > 1 ? (
-          <a href={pageUrl(query, query.page - 1)}>Previous</a>
+          <a aria-label="Previous result page" className="px-3 py-2" href={pageUrl(query, query.page - 1)}>Previous</a>
         ) : (
           <span />
         )}
@@ -75,10 +76,11 @@ export default async function Page({ searchParams }: { searchParams: Promise<Par
           Page {query.page} of {pages}
         </span>
         {query.page < pages ? (
-          <a href={pageUrl(query, query.page + 1)}>Next</a>
+          <a aria-label="Next result page" className="px-3 py-2" href={pageUrl(query, query.page + 1)}>Next</a>
         ) : (
           <span />
         )}
+        {query.page < pages - 1 ? <a href={pageUrl(query,pages)}>Last page</a> : null}
       </nav>
     </main>
   );
