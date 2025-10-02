@@ -5,7 +5,8 @@ import { SearchForm } from '@/components/search-form';
 export async function generateMetadata({searchParams}:{searchParams:Promise<Params>}) {
   const {query} = results(await searchParams);
   const filters = [query.q,query.category,query.level].filter(Boolean).join(' · ');
-  return { title: filters ? `${filters} | Catalog Explorer` : 'Catalog Explorer', description: filters ? `Programming references matching ${filters}.` : 'Browse a small programming reference shelf.' };
+  const filtered = Boolean(filters || query.sort !== 'default' || query.mode !== 'phrase' || query.size !== 6 || query.page !== 1);
+  return { robots: { index: !filtered, follow: true }, title: filters ? `${filters} | Catalog Explorer` : 'Catalog Explorer', description: filters ? `Programming references matching ${filters}.` : 'Browse a small programming reference shelf.' };
 }
 export default async function Page({ searchParams }: { searchParams: Promise<Params> }) {
   const { query, entries, count, pages, facets, start, end, pageAdjusted } = results(await searchParams);
