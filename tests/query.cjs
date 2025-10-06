@@ -71,3 +71,9 @@ const kept=pageUrl({...composed,q:''},1);
 assert.ok(kept.includes('category=Python')&&kept.includes('size=12')&&kept.includes('mode=words'));
 assert.equal(results({q:'close files',mode:'words',category:'Python',level:'Intermediate',size:'12'}).count,1);
 assert.equal(results({q:'close files',mode:'words',category:'CSS'}).count,0);
+
+assert.equal(results({q:'nonexistent'}).facets.categories.HTML,0);
+assert.equal(results({q:'ＦＩＬＥＳ'}).count,1);
+assert.equal(Array.from(readQuery({q:'😀'.repeat(100)}).q).length,100);
+assert.equal(readQuery({category:['HTML','CSS']}).category,'');
+assert.equal(results({q:'files',level:'Beginner'}).facets.levels.Intermediate,1);
