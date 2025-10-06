@@ -5,3 +5,8 @@ for(const back of ['https://example.com','//example.com','/notes/1','/?q=x#fragm
 
 assert.equal(safeReturn('/?category=CSS&sort=title&page=99'),'/?category=CSS&sort=title&page=1');
 assert.equal(safeReturn('/?q=a&q=b'),'/?page=1');
+
+assert.equal(safeReturn('/?q='+encodeURIComponent('😀'.repeat(100))), '/?q='+encodeURIComponent('😀'.repeat(100))+'&page=1');
+assert.equal(safeReturn('/?page=999999&size=12'),'/?size=12&page=2');
+assert.equal(safeReturn('/?q='+ 'a'.repeat(5000)),'/');
+assert.equal(safeReturn('/?back=https://example.com'),'/?page=1');
