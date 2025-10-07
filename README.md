@@ -39,3 +39,9 @@ Contextual topic counts apply search and level, while contextual level counts ap
 Direct page links expose the current page to assistive technology. A skip link reaches the main content. The GET form, pagination, and detail links work with browser JavaScript disabled. Unknown note identifiers return HTTP 404; identifiers must match the authored entry exactly.
 
 The ten assigned maintenance dates are February 5, March 21, May 9, June 20, July 11, August 29, September 16, October 10, November 18, and December 23, 2024. Historical dependencies still have known advisories: upgrade and review them before adapting this local reconstruction into a current hosted service.
+
+## Composed browsing
+
+The 2025 browse form supports phrase or all-word matching, title order in either direction, and six or twelve notes per page. Active-filter links remove only the named constraint. Query parameters preserve the view through pagination; reference links carry a bounded, validated return path. Topic reading links keep that context.
+
+Search submissions use a native GET form and target the results region. Zero results offer links to relax one constraint. Filtered variants are marked noindex while detail pages retain metadata. Browser JavaScript is not required for these workflows.
