@@ -24,8 +24,9 @@ export function readQuery(params: Params) {
   const size = single(params.size) === '12' ? 12 : 6;
   return { q, category, level, page, sort, mode, size };
 }
+const searchText = new Map(catalog.map((entry) => [entry.id, normalize(entry.title + ' ' + entry.summary).toLowerCase()]));
 function matchesText(entry: typeof catalog[number], q: string, mode: string) {
-  const text = normalize(entry.title + ' ' + entry.summary).toLowerCase();
+  const text = searchText.get(entry.id)!;
   return mode === 'words' ? q.toLowerCase().split(' ').every((word) => text.includes(word)) : text.includes(q.toLowerCase());
 }
 export function results(params: Params) {
