@@ -50,27 +50,13 @@ export function results(params: Params) {
         a.id - b.id
     );
   const facets = {
-    categories: Object.fromEntries(
-      categories.map((category) => [
-        category,
-        textMatches.filter(
-          (entry) =>
-            entry.category === category &&
-            (!query.level || entry.level === query.level)
-        ).length,
-      ])
-    ),
-    levels: Object.fromEntries(
-      levels.map((level) => [
-        level,
-        textMatches.filter(
-          (entry) =>
-            entry.level === level &&
-            (!query.category || entry.category === query.category)
-        ).length,
-      ])
-    ),
+    categories: Object.fromEntries(categories.map((category) => [category, 0])),
+    levels: Object.fromEntries(levels.map((level) => [level, 0])),
   };
+  for (const entry of textMatches) {
+    if (!query.level || entry.level === query.level) facets.categories[entry.category] += 1;
+    if (!query.category || entry.category === query.category) facets.levels[entry.level] += 1;
+  }
   const pages = Math.max(1, Math.ceil(matches.length / query.size));
   const page = Math.min(query.page, pages);
   return {
