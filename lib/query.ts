@@ -31,11 +31,13 @@ function matchesText(entry: typeof catalog[number], q: string, mode: string) {
 }
 export function results(params: Params) {
   const query = readQuery(params);
-  const matches = catalog.filter(
+  const textMatches = catalog.filter((entry) =>
+    matchesText(entry, query.q, query.mode)
+  );
+  const matches = textMatches.filter(
     (entry) =>
       (!query.category || entry.category === query.category) &&
-      (!query.level || entry.level === query.level) &&
-      matchesText(entry, query.q, query.mode)
+      (!query.level || entry.level === query.level)
   );
   if (query.sort === 'title')
     matches.sort((a, b) => a.title.localeCompare(b.title, 'en') || a.id - b.id);
@@ -47,9 +49,6 @@ export function results(params: Params) {
         a.title.localeCompare(b.title, 'en') ||
         a.id - b.id
     );
-  const textMatches = catalog.filter((entry) =>
-    matchesText(entry, query.q, query.mode)
-  );
   const facets = {
     categories: Object.fromEntries(
       categories.map((category) => [
