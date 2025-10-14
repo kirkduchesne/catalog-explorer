@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const os = require('node:os');
 const baseline = require('/tmp/catalog-explorer-2025-benchmark/benchmarks/baseline-query.js');
 const current = require('/tmp/catalog-explorer-2025-benchmark/lib/query.js');
-const cases = [{},{category:'CSS'},{level:'Beginner'},{q:'files'},{q:'close files',mode:'words'},{sort:'title'},{sort:'title-desc',size:'12'},{category:'Python',level:'Intermediate',page:'3'}];
+const cases = [{q:'😀'.repeat(100)},{q:'ＦＩＬＥＳ'},{category:['HTML','CSS']},{page:'999999'}, {},{category:'CSS'},{level:'Beginner'},{q:'files'},{q:'close files',mode:'words'},{sort:'title'},{sort:'title-desc',size:'12'},{category:'Python',level:'Intermediate',page:'3'}];
 for (const input of cases) assert.deepEqual(current.results(input),baseline.results(input));
 function measure(engine, loops) {
   const start = performance.now();
