@@ -77,3 +77,11 @@ assert.equal(results({q:'ＦＩＬＥＳ'}).count,1);
 assert.equal(Array.from(readQuery({q:'😀'.repeat(100)}).q).length,100);
 assert.equal(readQuery({category:['HTML','CSS']}).category,'');
 assert.equal(results({q:'files',level:'Beginner'}).facets.levels.Intermediate,1);
+
+const source=require('/tmp/catalog-explorer-2025-tests/catalog.js').catalog;
+const original=JSON.stringify(source);
+const forward=results({sort:'title',size:'12'}).entries.map(x=>x.title);
+const reverse=results({sort:'title-desc',size:'12'}).entries.map(x=>x.title);
+assert.notDeepEqual(forward,reverse);
+assert.equal(JSON.stringify(source),original);
+assert.deepEqual(results({sort:'title'}),results({sort:'title'}));
