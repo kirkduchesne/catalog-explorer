@@ -16,7 +16,7 @@ export function SearchForm({
     <form
       action="/#results"
       method="get"
-      className="mb-6 grid gap-4 rounded-lg border bg-white p-5 sm:grid-cols-2 lg:grid-cols-5"
+      className="mb-6 grid gap-4 rounded-lg border bg-white p-5 sm:grid-cols-2 lg:grid-cols-4"
     >
       <fieldset className="contents"><legend className="sr-only">Search and browse the reference catalog</legend>
       <div>
