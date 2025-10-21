@@ -85,3 +85,5 @@ const reverse=results({sort:'title-desc',size:'12'}).entries.map(x=>x.title);
 assert.notDeepEqual(forward,reverse);
 assert.equal(JSON.stringify(source),original);
 assert.deepEqual(results({sort:'title'}),results({sort:'title'}));
+
+for(const category of ['', 'HTML','CSS','JavaScript','Python'])for(const level of ['', 'Beginner','Intermediate'])for(const mode of ['phrase','words'])for(const size of ['6','12']){const r=results({category,level,mode,size,page:'999'});assert.ok(r.entries.length<=Number(size));assert.ok(r.query.page<=r.pages);assert.ok(r.entries.every(e=>(!category||e.category===category)&&(!level||e.level===level)));assert.equal(Object.values(r.facets.categories).reduce((a,b)=>a+b,0),results({level,mode,size}).count);}
