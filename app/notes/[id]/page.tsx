@@ -21,7 +21,13 @@ export async function generateMetadata({
     : { title: 'Note not found | Catalog Explorer' };
 }
 
-export default async function NotePage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{back?:string|string[]}> }) {
+export default async function NotePage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ back?: string | string[] }>;
+}) {
   const back = safeReturn((await searchParams).back);
   const { id } = await params;
   const entry = catalog.find((item) => String(item.id) === id);
@@ -42,10 +48,37 @@ export default async function NotePage({ params, searchParams }: { params: Promi
         Use this short reference as a starting point when reviewing your own
         code.
       </p>
-      <section className="mt-8" aria-labelledby="related-heading"><h2 id="related-heading" className="text-xl font-semibold">More in {entry.category}</h2><ul className="mt-3 space-y-2">{topic.filter((item) => item.id !== entry.id).slice(0,3).map((item) => <li key={item.id}><a href={detailUrl(item.id,back)}>{item.title}</a></li>)}</ul></section>
-      <nav aria-label="Same topic reading order" className="mt-8 grid gap-4 border-t pt-4 sm:grid-cols-2">
-        {previous ? <a href={detailUrl(previous.id,back)} rel="prev">Previous: {previous.title}</a> : <span />}
-        {next ? <a href={detailUrl(next.id,back)} rel="next">Next: {next.title}</a> : null}
+      <section className="mt-8" aria-labelledby="related-heading">
+        <h2 id="related-heading" className="text-xl font-semibold">
+          More in {entry.category}
+        </h2>
+        <ul className="mt-3 space-y-2">
+          {topic
+            .filter((item) => item.id !== entry.id)
+            .slice(0, 3)
+            .map((item) => (
+              <li key={item.id}>
+                <a href={detailUrl(item.id, back)}>{item.title}</a>
+              </li>
+            ))}
+        </ul>
+      </section>
+      <nav
+        aria-label="Same topic reading order"
+        className="mt-8 grid gap-4 border-t pt-4 sm:grid-cols-2"
+      >
+        {previous ? (
+          <a href={detailUrl(previous.id, back)} rel="prev">
+            Previous: {previous.title}
+          </a>
+        ) : (
+          <span />
+        )}
+        {next ? (
+          <a href={detailUrl(next.id, back)} rel="next">
+            Next: {next.title}
+          </a>
+        ) : null}
       </nav>
     </main>
   );
