@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "next typegen && tsc --noEmit",
-    "test": "tsc lib/*.ts --outDir /tmp/catalog-explorer-2025-tests --module commonjs --target es2020 --skipLibCheck && node --test tests/query.cjs tests/content.cjs tests/navigation.cjs",
-    "benchmark": "tsc lib/*.ts benchmarks/*.ts --outDir /tmp/catalog-explorer-2025-benchmark --rootDir . --module commonjs --target es2020 --skipLibCheck && node benchmarks/run.cjs"
+    "test": "node scripts/check.cjs",
+    "benchmark": "node scripts/check.cjs benchmark"
   },
   "dependencies": {
     "@radix-ui/react-slot": "1.2.3",

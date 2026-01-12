@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const {
   detailUrl,
   safeReturn,
-} = require('/tmp/catalog-explorer-2025-tests/navigation.js');
+} = require(process.env.CATALOG_TEST_LIB + '/navigation.js');
 assert.equal(
   detailUrl(1, '/?q=a&category=CSS'),
   '/notes/1?back=%2F%3Fq%3Da%26category%3DCSS'
