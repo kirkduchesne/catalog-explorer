@@ -1,3 +1,4 @@
+import { BookmarkButton } from '@/components/bookmark-button';
 import { detailUrl } from '@/lib/navigation';
 import { ActiveFilters } from '@/components/active-filters';
 import { pageUrl, results, type Params } from '@/lib/query';
@@ -101,6 +102,7 @@ export default async function Page({
             <p className="mt-3 leading-relaxed text-stone-600">
               {entry.summary}
             </p>
+            <BookmarkButton id={entry.id} title={entry.title} />
           </li>
         ))}
       </ul>
