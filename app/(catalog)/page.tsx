@@ -1,3 +1,4 @@
+import { ReadingSummary } from '@/components/reading-summary';
 import { BookmarkButton } from '@/components/bookmark-button';
 import { detailUrl } from '@/lib/navigation';
 import { ActiveFilters } from '@/components/active-filters';
@@ -41,6 +42,7 @@ export default async function Page({
         <h1 className="text-4xl font-semibold">Catalog Explorer</h1>
         <p>Browse short, authored notes on everyday programming concepts.</p>
       </header>
+      <ReadingSummary />
       <SearchForm query={query} facets={facets} />
       <ActiveFilters query={query} />
       <div
