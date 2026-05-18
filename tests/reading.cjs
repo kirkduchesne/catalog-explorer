@@ -15,3 +15,5 @@ assert.throws(()=>storageFns.persistReadingList({getItem:()=>null,setItem:()=>{t
 
 const actions=require(process.env.CATALOG_TEST_LIB+'/reading-actions.js');
 assert.equal(actions.saveReference([entry],1,entry.savedAt).length,1);assert.equal(actions.removeReference([entry],1).length,0);assert.equal(actions.setRead([entry],1,true)[0].read,true);assert.equal(entry.read,false);
+
+const navigation=require(process.env.CATALOG_TEST_LIB+'/navigation.js');assert.equal(navigation.safeReturn('/reading-list'),'/reading-list');assert.equal(navigation.safeReturn('/reading-list/evil'),'/');

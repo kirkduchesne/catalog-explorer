@@ -3,6 +3,7 @@ export function detailUrl(id: number, back: string) {
   return `/notes/${id}?back=${encodeURIComponent(back)}`;
 }
 export function safeReturn(value: string | string[] | undefined): string {
+  if (value === "/reading-list") return value;
   if (
     typeof value !== 'string' ||
     !value.startsWith('/?') ||
