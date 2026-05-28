@@ -21,3 +21,5 @@ const navigation=require(process.env.CATALOG_TEST_LIB+'/navigation.js');assert.e
 const readingQuery=require(process.env.CATALOG_TEST_LIB+'/reading-query.js');assert.equal(readingQuery.filterReading([entry],'read').length,0);assert.equal(readingQuery.filterReading([entry],'unread').length,1);
 
 assert.equal(readingQuery.filterReading([entry],'all','missing reference').length,0);assert.equal(readingQuery.filterReading([entry],'all',' HTML ').length,1);
+
+const sortReading=require(process.env.CATALOG_TEST_LIB+'/reading-sort.js').sortReading;assert.equal(sortReading([entry,{...entry,id:2,savedAt:'2026-05-01T00:00:00.000Z'}],'saved')[0].id,2);
