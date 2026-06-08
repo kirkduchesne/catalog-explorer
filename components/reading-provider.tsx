@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
-import { type ReadingEntry } from '@/lib/reading-list';
+import { readingKey, type ReadingEntry } from '@/lib/reading-list';
 import { loadReadingList, persistReadingList } from '@/lib/reading-storage';
 type ReadingContext = { entries: ReadingEntry[]; ready: boolean; error: string; announcement: string; write: (entries: ReadingEntry[], message: string) => boolean; reload: () => void; allowed: readonly number[] };
 const Context = createContext<ReadingContext | null>(null);
@@ -16,6 +16,7 @@ export function ReadingProvider({ids,children}:{ids:number[];children:ReactNode}
     catch { setReady(false);setError('Saved reading list cannot be read. Existing data is preserved; check browser storage and reload.'); }
   }
   useEffect(reload, [allowed]);
+  useEffect(()=>{function changed(event:StorageEvent){if(event.storageArea===localStorage&&(event.key===readingKey||event.key===null)){setReady(false);setError('Reading list changed in another tab. Reload the saved list before changing it.');}}window.addEventListener('storage',changed);return()=>window.removeEventListener('storage',changed);},[]);
   function write(next:ReadingEntry[],message:string) {
     if(!ready)return false;
     try {snapshot.current=persistReadingList(localStorage,next,snapshot.current,allowed);setEntries(next);setError('');setAnnouncement(message);return true;}
