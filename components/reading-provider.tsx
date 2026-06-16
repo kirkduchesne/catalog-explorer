@@ -11,6 +11,9 @@ export function ReadingProvider({ids,children}:{ids:number[];children:ReactNode}
   const [ready,setReady] = useState(false);
   const [error,setError] = useState('');
   const [announcement,setAnnouncement] = useState('');
+  const announceTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
+  function announce(message:string){setAnnouncement('');if(announceTimer.current)clearTimeout(announceTimer.current);announceTimer.current=setTimeout(()=>setAnnouncement(message),30);}
+  useEffect(()=>()=>{if(announceTimer.current)clearTimeout(announceTimer.current);},[]);
   function reload() {
     try { const loaded=loadReadingList(localStorage,allowed);snapshot.current=loaded.raw;setEntries(loaded.entries);setReady(true);setError('');setAnnouncement('Saved reading list loaded.'); }
     catch { setReady(false);setError('Saved reading list cannot be read. Existing data is preserved; check browser storage and reload.'); }
@@ -19,7 +22,7 @@ export function ReadingProvider({ids,children}:{ids:number[];children:ReactNode}
   useEffect(()=>{function changed(event:StorageEvent){if(event.storageArea===localStorage&&(event.key===readingKey||event.key===null)){setReady(false);setError('Reading list changed in another tab. Reload the saved list before changing it.');}}window.addEventListener('storage',changed);return()=>window.removeEventListener('storage',changed);},[]);
   function write(next:ReadingEntry[],message:string) {
     if(!ready)return false;
-    try {snapshot.current=persistReadingList(localStorage,next,snapshot.current,allowed);setEntries(next);setError('');setAnnouncement(message);return true;}
+    try {snapshot.current=persistReadingList(localStorage,next,snapshot.current,allowed);setEntries(next);setError('');announce(message);return true;}
     catch(error) {setError(error instanceof Error ? error.message : 'Reading list could not be saved.');return false;}
   }
   return <Context.Provider value={{entries,ready,error,announcement,write,reload,allowed}}>{children}</Context.Provider>;
