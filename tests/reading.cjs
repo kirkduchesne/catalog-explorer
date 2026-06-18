@@ -23,3 +23,5 @@ const readingQuery=require(process.env.CATALOG_TEST_LIB+'/reading-query.js');ass
 assert.equal(readingQuery.filterReading([entry],'all','missing reference').length,0);assert.equal(readingQuery.filterReading([entry],'all',' HTML ').length,1);
 
 const sortReading=require(process.env.CATALOG_TEST_LIB+'/reading-sort.js').sortReading;assert.equal(sortReading([entry,{...entry,id:2,savedAt:'2026-05-01T00:00:00.000Z'}],'saved')[0].id,2);
+
+const backup=require(process.env.CATALOG_TEST_LIB+'/reading-backup.js');assert.equal(backup.previewBackup(reading.serializeReadingList([entry],allowed),[entry],allowed).existing,1);assert.deepEqual(backup.mergeBackup([{...entry,read:true}],[entry],allowed),[{...entry,read:true}]);
