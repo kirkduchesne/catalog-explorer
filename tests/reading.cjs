@@ -25,3 +25,5 @@ assert.equal(readingQuery.filterReading([entry],'all','missing reference').lengt
 const sortReading=require(process.env.CATALOG_TEST_LIB+'/reading-sort.js').sortReading;assert.equal(sortReading([entry,{...entry,id:2,savedAt:'2026-05-01T00:00:00.000Z'}],'saved')[0].id,2);
 
 const backup=require(process.env.CATALOG_TEST_LIB+'/reading-backup.js');assert.equal(backup.previewBackup(reading.serializeReadingList([entry],allowed),[entry],allowed).existing,1);assert.deepEqual(backup.mergeBackup([{...entry,read:true}],[entry],allowed),[{...entry,read:true}]);
+
+const previewed=backup.previewBackup(reading.serializeReadingList([entry],allowed),[],allowed);const sameTab=[{...entry,read:true},{...entry,id:2}];assert.deepEqual(backup.mergeBackup(sameTab,previewed.entries,allowed),sameTab);
