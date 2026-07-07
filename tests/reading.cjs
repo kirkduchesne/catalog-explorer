@@ -27,3 +27,5 @@ const sortReading=require(process.env.CATALOG_TEST_LIB+'/reading-sort.js').sortR
 const backup=require(process.env.CATALOG_TEST_LIB+'/reading-backup.js');assert.equal(backup.previewBackup(reading.serializeReadingList([entry],allowed),[entry],allowed).existing,1);assert.deepEqual(backup.mergeBackup([{...entry,read:true}],[entry],allowed),[{...entry,read:true}]);
 
 const previewed=backup.previewBackup(reading.serializeReadingList([entry],allowed),[],allowed);const sameTab=[{...entry,read:true},{...entry,id:2}];assert.deepEqual(backup.mergeBackup(sameTab,previewed.entries,allowed),sameTab);
+
+const full=allowed.map(id=>({...entry,id,read:id%2===0}));assert.deepEqual(reading.parseReadingList(reading.serializeReadingList(full,allowed),allowed),full);assert.throws(()=>reading.parseReadingList(' '.repeat(reading.backupLimit+1),allowed));for(const raw of ['null','[]','{}',JSON.stringify({version:1,entries:[{...entry,savedAt:'invalid'}]})])assert.throws(()=>backup.previewBackup(raw,[],allowed));assert.equal(backup.mergeBackup(full,full,allowed).length,24);
