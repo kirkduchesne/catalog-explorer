@@ -31,3 +31,5 @@ const previewed=backup.previewBackup(reading.serializeReadingList([entry],allowe
 const full=allowed.map(id=>({...entry,id,read:id%2===0}));assert.deepEqual(reading.parseReadingList(reading.serializeReadingList(full,allowed),allowed),full);assert.throws(()=>reading.parseReadingList(' '.repeat(reading.backupLimit+1),allowed));for(const raw of ['null','[]','{}',JSON.stringify({version:1,entries:[{...entry,savedAt:'invalid'}]})])assert.throws(()=>backup.previewBackup(raw,[],allowed));assert.equal(backup.mergeBackup(full,full,allowed).length,24);
 
 assert.equal(reading.parseReadingList(reading.serializeReadingList(readingQuery.filterReading(full,'read'),allowed),allowed).length,12);
+
+const unchanged=stored;assert.throws(()=>storageFns.persistReadingList({getItem:()=>stored,setItem:()=>{throw Error('quota')}},[],stored,allowed),/quota/);assert.equal(stored,unchanged);assert.throws(()=>storageFns.loadReadingList({getItem:()=>'{broken',setItem:()=>assert.fail('must not write')},allowed));assert.throws(()=>storageFns.loadReadingList({getItem:()=>{throw Error('blocked')},setItem:()=>{}},allowed),/blocked/);
