@@ -33,3 +33,5 @@ const full=allowed.map(id=>({...entry,id,read:id%2===0}));assert.deepEqual(readi
 assert.equal(reading.parseReadingList(reading.serializeReadingList(readingQuery.filterReading(full,'read'),allowed),allowed).length,12);
 
 const unchanged=stored;assert.throws(()=>storageFns.persistReadingList({getItem:()=>stored,setItem:()=>{throw Error('quota')}},[],stored,allowed),/quota/);assert.equal(stored,unchanged);assert.throws(()=>storageFns.loadReadingList({getItem:()=>'{broken',setItem:()=>assert.fail('must not write')},allowed));assert.throws(()=>storageFns.loadReadingList({getItem:()=>{throw Error('blocked')},setItem:()=>{}},allowed),/blocked/);
+
+const nextUnread=require(process.env.CATALOG_TEST_LIB+'/reading-next.js').nextUnread;assert.equal(nextUnread([{...entry,read:true}]),undefined);assert.equal(nextUnread([entry,{...entry,id:2}],1),2);
