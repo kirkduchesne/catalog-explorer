@@ -37,3 +37,5 @@ const unchanged=stored;assert.throws(()=>storageFns.persistReadingList({getItem:
 const nextUnread=require(process.env.CATALOG_TEST_LIB+'/reading-next.js').nextUnread;assert.equal(nextUnread([{...entry,read:true}]),undefined);assert.equal(nextUnread([entry,{...entry,id:2}],1),2);
 
 for(const value of ['//evil.example','https://evil.example','/reading-list?next=//evil','/reading-list#fragment',['/reading-list'],'/?q=x#fragment'])assert.equal(navigation.safeReturn(value),'/');assert.match(navigation.detailUrl(1,'/reading-list'),/^\/notes\/1\?back=%2Freading-list$/);
+
+const stalePreview=backup.previewBackup(reading.serializeReadingList([{...entry,id:3}],allowed),[entry],allowed);let currentRaw=reading.serializeReadingList([entry],allowed);const expectedRaw=currentRaw;currentRaw=reading.serializeReadingList([{...entry,read:true}],allowed);assert.throws(()=>storageFns.persistReadingList({getItem:()=>currentRaw,setItem:()=>assert.fail('stale write')},backup.mergeBackup([entry],stalePreview.entries,allowed),expectedRaw,allowed),/another tab/);
