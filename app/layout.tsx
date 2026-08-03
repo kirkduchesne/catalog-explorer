@@ -15,7 +15,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         >
           Skip to content
         </a>
-        <ReadingProvider ids={catalog.map((entry) => entry.id)}>{children}</ReadingProvider>
+        <ReadingProvider ids={catalog.map((entry) => entry.id)}>
+          {children}
+        </ReadingProvider>
       </body>
     </html>
   );

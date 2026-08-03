@@ -18,7 +18,7 @@ export async function generateMetadata({
       query.sort !== 'default' ||
       query.mode !== 'phrase' ||
       query.size !== 6 ||
-      query.page !== 1
+      query.page !== 1,
   );
   return {
     robots: { index: !filtered, follow: true },
