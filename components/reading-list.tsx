@@ -27,22 +27,22 @@ export function ReadingList() {
     );
   return (
     <section aria-label="Saved references">
-      <label className="mb-3 block">
+      <label className="mb-3 block max-w-xl">
         Search saved titles or topics
         <input
           ref={searchInput}
           type="search"
-          className="ml-2 border p-2"
+          className="mt-2 w-full rounded border p-2"
           value={search}
           onChange={(event) =>
             setSearch(Array.from(event.target.value).slice(0, 100).join(''))
           }
         />
       </label>
-      <label className="block">
+      <label className="block max-w-xl">
         Reading status
         <select
-          className="ml-2 border p-2"
+          className="mt-2 w-full rounded border p-2"
           value={status}
           onChange={(event) => setStatus(event.target.value as ReadingFilter)}
         >
@@ -51,10 +51,10 @@ export function ReadingList() {
           <option value="read">Read</option>
         </select>
       </label>
-      <label className="my-3 block">
+      <label className="my-3 block max-w-xl">
         Sort saved references
         <select
-          className="ml-2 border p-2"
+          className="mt-2 w-full rounded border p-2"
           value={sort}
           onChange={(event) => setSort(event.target.value as 'saved' | 'title')}
         >
