@@ -229,3 +229,5 @@ assert.throws(
     ),
   /another tab/,
 );
+
+for (const source of [[], [entry], allowed.map(id=>({...entry,id,read:id%2===0}))]) {const canonical=reading.serializeReadingList(source,allowed);assert.equal(reading.serializeReadingList(reading.parseReadingList(canonical,allowed),allowed),canonical);assert.deepEqual(backup.mergeBackup(source,source,allowed),source);for(const id of allowed)assert.deepEqual(actions.removeReference(actions.removeReference(source,id),id),actions.removeReference(source,id));}assert.deepEqual(sortReading([entry],'title'),[entry]);
