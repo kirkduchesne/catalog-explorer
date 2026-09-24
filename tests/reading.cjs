@@ -230,4 +230,47 @@ assert.throws(
   /another tab/,
 );
 
-for (const source of [[], [entry], allowed.map(id=>({...entry,id,read:id%2===0}))]) {const canonical=reading.serializeReadingList(source,allowed);assert.equal(reading.serializeReadingList(reading.parseReadingList(canonical,allowed),allowed),canonical);assert.deepEqual(backup.mergeBackup(source,source,allowed),source);for(const id of allowed)assert.deepEqual(actions.removeReference(actions.removeReference(source,id),id),actions.removeReference(source,id));}assert.deepEqual(sortReading([entry],'title'),[entry]);
+for (const source of [
+  [],
+  [entry],
+  allowed.map((id) => ({ ...entry, id, read: id % 2 === 0 })),
+]) {
+  const canonical = reading.serializeReadingList(source, allowed);
+  assert.equal(
+    reading.serializeReadingList(
+      reading.parseReadingList(canonical, allowed),
+      allowed,
+    ),
+    canonical,
+  );
+  assert.deepEqual(backup.mergeBackup(source, source, allowed), source);
+  for (const id of allowed)
+    assert.deepEqual(
+      actions.removeReference(actions.removeReference(source, id), id),
+      actions.removeReference(source, id),
+    );
+}
+assert.deepEqual(sortReading([entry], 'title'), [entry]);
+
+const threeUnread = [1, 2, 3].map((id) => ({ ...entry, id }));
+assert.equal(nextUnread(threeUnread, 1), 2);
+assert.equal(nextUnread(threeUnread, 2), 3);
+assert.equal(nextUnread(threeUnread, 3), 1);
+assert.equal(nextUnread(threeUnread, 99), 1);
+assert.equal(nextUnread(threeUnread), 1);
+assert.equal(
+  nextUnread(
+    threeUnread.map((item) => ({ ...item, read: true })),
+    1,
+  ),
+  undefined,
+);
+assert.equal(nextUnread([entry], 1), undefined);
+assert.equal(nextUnread([], 1), undefined);
+assert.equal(
+  nextUnread(
+    threeUnread.map((item) => ({ ...item, read: item.id === 2 })),
+    1,
+  ),
+  3,
+);

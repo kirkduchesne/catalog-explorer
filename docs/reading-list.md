@@ -11,3 +11,5 @@ Writes compare the stored snapshot before replacing it. Changes from another tab
 If storage is blocked, full, or malformed, saved content is not automatically deleted. Restore browser storage access and reload. If data was manually corrupted, keep a copy before repairing or removing that specific key in browser developer tools; there is no automatic reset that discards it. Downloads may require browser permission. A download request does not prove that a file was retained.
 
 Catalog search, filters, pagination, and reference links remain usable with JavaScript disabled. Saving, reading status, and backups require JavaScript. Reading-list search and sort are local view controls and reset when navigating away; the catalog search URL remains shareable.
+
+From a reference detail, **Next unread saved reference** advances through saved-entry order, skips read entries and the current reference, and wraps to the beginning. Opening a reference does not mark it read. If the current reference is absent, navigation starts at the first unread entry.

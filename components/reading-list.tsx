@@ -18,6 +18,14 @@ export function ReadingList() {
   const [confirmClear, setConfirmClear] = useState(false);
   const [sort, setSort] = useState<'saved' | 'title'>('saved');
   const visible = sortReading(filterReading(entries, status, search), sort);
+  function focusRow(index: number) {
+    requestAnimationFrame(() => {
+      const links = list.current?.querySelectorAll('a');
+      if (links?.length)
+        (links[Math.min(index, links.length - 1)] as HTMLElement).focus();
+      else searchInput.current?.focus();
+    });
+  }
   if (!ready)
     return (
       <p>
@@ -93,8 +101,10 @@ export function ReadingList() {
                     entries.filter((entry) => !entry.read),
                     'Read references removed.',
                   )
-                )
+                ) {
                   setConfirmClear(false);
+                  searchInput.current?.focus();
+                }
               }}
             >
               Confirm clear read
@@ -160,14 +170,18 @@ export function ReadingList() {
                   <button
                     type="button"
                     aria-pressed={saved.read}
-                    onClick={() =>
-                      write(
-                        setRead(entries, item.id, !saved.read),
-                        saved.read
-                          ? `Marked ${item.title} unread.`
-                          : `Marked ${item.title} read.`,
+                    onClick={() => {
+                      if (
+                        write(
+                          setRead(entries, item.id, !saved.read),
+                          saved.read
+                            ? `Marked ${item.title} unread.`
+                            : `Marked ${item.title} read.`,
+                        ) &&
+                        status !== 'all'
                       )
-                    }
+                        focusRow(index);
+                    }}
                   >
                     {saved.read ? 'Mark unread' : 'Mark read'}
                   </button>
