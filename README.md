@@ -1,41 +1,56 @@
 # Catalog Explorer
 
-A small programming reference shelf with server-rendered search and filtering.
+Browse 24 concise programming references with shareable search, contextual filters, and reading links that preserve your place.
 
-Created in September 2026 as a present-day reconstruction using technology available at the assigned 2023–2024 milestones. Historical commit dates were intentionally assigned and do not indicate original work or publication in those years.
+![Catalog Explorer showing JavaScript references](docs/preview.png)
 
-## Run and check
+## Run
 
-Use Node 20: `npm ci`, `npm run build`, then `npm start`. Development: `npm run dev`. Open `http://localhost:3000`. Run `npm test` and `npm run typecheck` for query and type checks.
+Use Node 20, then:
 
-Tested with Node 20.19.0, a later maintenance release, not a patch version represented as available at the assigned 2024 dates. These historical dependencies are for a local portfolio demonstration and are not recommended for current production deployment.
+```sh
+npm ci
+npm run dev -- --hostname 127.0.0.1
+```
 
-## Catalog and behavior
+Open `http://localhost:3000`. For a production build, run `npm run build` followed by `npm start -- --hostname 127.0.0.1`.
 
-The 24 short reference notes are authored sample content stored in `lib/catalog.ts`. They are not a live resource directory or a remote API response. Search matches titles and summaries, without regard to case. Topic and level filters combine with search. Each page shows at most six notes. Choose original reference order, title A–Z, or topic then title. Each note has a shareable detail URL and its own metadata.
+The current stack is Next.js 15.5.2, React 19.1.1, TypeScript 5.9.2, and Tailwind CSS 3.4.1. Local checks used Node 20.19.0; CI pins 20.19.5. Both runtime releases existed before their corresponding 2025 milestones. All 152 resolved package versions were checked against the September 1, 2025 dependency cutoff.
 
-The GET form stores search and filters in the URL. Changing filters starts on page one. Pagination retains active filters and sort order. Invalid categories/levels are treated as unrestricted; repeated parameters are ignored. Search uses Unicode NFKC normalization, collapses repeated whitespace, and is limited to 100 Unicode code points. Matching remains a case-insensitive phrase search. Invalid page values default to one, and out-of-range pages display the final available page. Clear filters returns to the full collection. URLs can be bookmarked or shared.
+## Browse and read
 
-Forms and pagination work without browser JavaScript. Native select controls keep ordinary form semantics. Framework loading, error-recovery, and not-found views cover route transitions and failures; no artificial delays are added to make loading visible.
+- Match an exact phrase or every search word, then combine topic and level filters.
+- Sort by reference order, title in either direction, or topic and title; show six or twelve notes per page.
+- Remove one active filter without discarding the rest. Empty results suggest specific constraints to relax.
+- Open a reference and return to the same search, or follow adjacent and related references within its topic.
 
-## Stack and provenance
+The native GET form, pagination, and reading links work without JavaScript. URLs preserve the submitted view. Search uses Unicode NFKC normalization, whitespace normalization, and the first 100 Unicode code points. Repeated parameters and unknown choices fall back to defaults. Page numbers are bounded to available results.
 
-The original November 2023 baseline used Next.js 13.5.6, React 18.2.0, TypeScript 5.2.2, and Tailwind CSS 3.3.5. The February 2024 milestone moves to Next.js 14.1.0, TypeScript 5.3.3, Tailwind CSS 3.4.1, and Node 20. The November milestone updates Next.js to 14.2.18 and React/React DOM to 18.3.1. All 130 February and 131 November resolved package versions were checked against registry publication timestamps before their introducing milestones. Existing component source and license remain unchanged.
+Topic counts apply search and level but ignore the selected topic; level counts apply search and topic but ignore the selected level. This explains why the choices can show counts beyond the current results.
 
-Unchanged shadcn/ui Button and Input source comes from revision [`c21ecfb665214e18cd5914ea319f925cd676e786`](https://github.com/shadcn-ui/ui/tree/c21ecfb665214e18cd5914ea319f925cd676e786), before September 5, 2023. Source paths are `apps/www/registry/default/ui/button.tsx` and `input.tsx`; local copies are in `components/ui/`. Its MIT notice is retained in `SHADCN-LICENSE.md`. No modern component generator was used.
+The index is server-rendered. `generateStaticParams` enumerates the 24 allowed note identifiers, while detail pages read the request's validated return context. Unknown identifiers return HTTP 404. The index loading boundary is scoped separately so it cannot stream a successful response before a missing detail is rejected. Filtered index variants have noindex metadata.
 
-## Rendering and validation
+## Checks and measurements
 
-Catalog filtering and slicing run in the page's Server Component. Only the displayed results are rendered; the full catalog is not imported by a Client Component. The error boundary is a Client Component because retry requires an event handler. This keeps application filtering logic on the server while still delivering rendered result text to the browser.
+```sh
+npm test
+npm run typecheck
+npm run build
+npm run benchmark
+```
 
-The catalog remains a small 24-entry collection, filtered directly on the server. No performance improvement is claimed. Detail pages are generated at build time; the query-driven index is server-rendered on request.
+Tests cover composed filters, ordering, facet counts, page bounds, Unicode, authored metadata, and safe return URLs. Browser checks cover all 24 details, malformed-route 404 responses, keyboard navigation, 100-emoji searches, narrow screens, and JavaScript-disabled workflows. The preview above is an actual application screenshot.
 
-Tests cover combined filters, invalid/repeated parameters, empty results, URL encoding, and page clamping. Production-browser checks cover direct URLs, keyboard form submission, mobile layouts, pagination, 404 behavior, and filtering with JavaScript disabled. Loading/error components are implemented, but no artificial production failure was injected to claim end-to-end recovery testing.
+A repeated-query microbenchmark on the real 24-entry collection measured a median **68.093 ms before and 6.614 ms after** for 2,400 evaluations in one run. Precomputed search text and shared facet passes reduce repeated query work. These are in-process measurements, not page-load timings or evidence of a noticeable user-facing improvement. See [the reproducible benchmark](benchmarks/README.md) for rounds, parity checks, and limitations.
 
-## 2024 maintenance behavior
+## Scope and provenance
 
-Contextual topic counts apply search and level, while contextual level counts apply search and topic. Each count ignores its own dimension so another choice remains discoverable. Zero-count options remain selectable and lead to the empty state.
+Content is authored locally in `lib/catalog.ts`. There is no remote directory, simulated API, account, persistence, or database. Historical dependencies have known advisories; upgrade and review them before adapting this local reconstruction into a current hosted service.
 
-Direct page links expose the current page to assistive technology. A skip link reaches the main content. The GET form, pagination, and detail links work with browser JavaScript disabled. Unknown note identifiers return HTTP 404; identifiers must match the authored entry exactly.
+This project was created in **September 2026** as a reconstruction. Historical commit dates were intentionally assigned and do not establish original development or publication dates.
 
-The ten assigned maintenance dates are February 5, March 21, May 9, June 20, July 11, August 29, September 16, October 10, November 18, and December 23, 2024. Historical dependencies still have known advisories: upgrade and review them before adapting this local reconstruction into a current hosted service.
+- **2023:** a small server-rendered reference catalog with basic filters.
+- **2024:** detail metadata, contextual counts, Unicode handling, and accessible pagination.
+- **2025:** composed browsing, preserved reading context, framework migration, and measured query improvements.
+
+The shadcn/ui Button and Input source remains from revision [`c21ecfb665214e18cd5914ea319f925cd676e786`](https://github.com/shadcn-ui/ui/tree/c21ecfb665214e18cd5914ea319f925cd676e786). Its unchanged source and MIT notice are retained in `components/ui/` and `SHADCN-LICENSE.md`.
