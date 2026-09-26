@@ -1,6 +1,6 @@
 # Reading-list storage and recovery
 
-Saved IDs, read flags, and ISO saved timestamps stay in this browser under `catalog-reading-list-v1`. No account or server copy exists. Clearing browser data removes the list.
+Saved IDs, read flags, and ISO saved timestamps stay in this browser under `catalog-reading-list-v1`. The key predates the Dogear rename and is kept so existing lists survive it. Downloads are named `dogear-reading-list.json`. No account or server copy exists. Clearing browser data removes the list.
 
 Download all entries or the visible subset before moving browsers. Paste the JSON into the destination, preview its counts, then confirm the merge. Existing IDs retain their current state; new IDs are added. Cancel or edit the input to discard a preview. Confirmation recomputes the merge against the current list, including changes made on this page after previewing.
 

@@ -1,5 +1,7 @@
 'use client';
+import { ArrowRight, Check, Circle } from 'lucide-react';
 import { useReadingList } from './reading-provider';
+import { Button } from '@/components/ui/button';
 import { nextUnread } from '@/lib/reading-next';
 import { detailUrl } from '@/lib/navigation';
 import { setRead } from '@/lib/reading-actions';
@@ -7,10 +9,16 @@ export function ReadingDetail({ id }: { id: number }) {
   const { entries, ready, write } = useReadingList();
   const saved = entries.find((entry) => entry.id === id);
   if (!ready || !saved) return null;
+  const next = nextUnread(entries, id);
   return (
-    <aside className="my-4" aria-label="Saved reading progress">
-      <button
+    <aside
+      className="flex flex-wrap items-center gap-3"
+      aria-label="Saved reading progress"
+    >
+      <Button
         type="button"
+        size="sm"
+        variant={saved.read ? 'secondary' : 'default'}
         aria-pressed={saved.read}
         onClick={() =>
           write(
@@ -19,14 +27,20 @@ export function ReadingDetail({ id }: { id: number }) {
           )
         }
       >
+        {saved.read ? (
+          <Circle aria-hidden="true" />
+        ) : (
+          <Check aria-hidden="true" />
+        )}
         {saved.read ? 'Mark unread' : 'Mark read'}
-      </button>
-      {nextUnread(entries, id) ? (
-        <p className="mt-3">
-          <a href={detailUrl(nextUnread(entries, id)!, '/reading-list')}>
+      </Button>
+      {next ? (
+        <Button asChild size="sm" variant="ghost">
+          <a href={detailUrl(next, '/reading-list')}>
             Next unread saved reference
+            <ArrowRight aria-hidden="true" />
           </a>
-        </p>
+        </Button>
       ) : null}
     </aside>
   );

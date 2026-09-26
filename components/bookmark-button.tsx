@@ -1,16 +1,29 @@
 'use client';
+import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { useReadingList } from './reading-provider';
+import { Button } from '@/components/ui/button';
 import { saveReference, removeReference } from '@/lib/reading-actions';
-export function BookmarkButton({ id, title }: { id: number; title: string }) {
+import { cn } from '@/lib/utils';
+export function BookmarkButton({
+  id,
+  title,
+  className,
+}: {
+  id: number;
+  title: string;
+  className?: string;
+}) {
   const { entries, ready, write, error } = useReadingList();
   const saved = entries.some((entry) => entry.id === id);
   return (
-    <div className="mt-3">
-      <button
+    <div className={cn('relative z-10', className)} data-saved={saved}>
+      <Button
         type="button"
+        size="sm"
+        variant={saved ? 'secondary' : 'outline'}
         disabled={!ready}
         aria-pressed={saved}
-        className="rounded border px-3 py-2 disabled:opacity-50"
+        className={cn(saved && 'text-brand-ink')}
         onClick={() =>
           write(
             saved
@@ -20,10 +33,15 @@ export function BookmarkButton({ id, title }: { id: number; title: string }) {
           )
         }
       >
+        {saved ? (
+          <BookmarkCheck aria-hidden="true" className="fill-brand/20" />
+        ) : (
+          <Bookmark aria-hidden="true" />
+        )}
         {saved ? 'Remove from reading list' : 'Save to reading list'}
-      </button>
+      </Button>
       {error ? (
-        <p role="alert" className="mt-2 text-sm">
+        <p role="alert" className="mt-2 text-sm text-destructive">
           {error}
         </p>
       ) : null}
