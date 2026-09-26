@@ -1,27 +1,153 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
+  /* Dogear palette: warm paper, deep ink, and a vermilion page fold. */
+  :root {
+    --background: 42 33% 96%;
+    --foreground: 222 32% 13%;
+    --card: 40 40% 99%;
+    --card-foreground: 222 32% 13%;
+    --primary: 222 32% 15%;
+    --primary-foreground: 42 40% 97%;
+    --secondary: 40 24% 90%;
+    --secondary-foreground: 222 32% 15%;
+    --muted: 40 22% 91%;
+    --muted-foreground: 222 10% 38%;
+    --accent: 38 30% 89%;
+    --accent-foreground: 222 32% 13%;
+    --destructive: 2 62% 42%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 38 18% 84%;
+    --input: 36 12% 70%;
+    --ring: 14 78% 44%;
+    --brand: 14 86% 54%;
+    --brand-ink: 14 76% 38%;
+    --brand-soft: 16 90% 93%;
+    --radius: 0.75rem;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: 224 24% 8%;
+      --foreground: 40 30% 92%;
+      --card: 224 22% 11%;
+      --card-foreground: 40 30% 92%;
+      --primary: 40 32% 92%;
+      --primary-foreground: 224 28% 10%;
+      --secondary: 224 16% 17%;
+      --secondary-foreground: 40 30% 92%;
+      --muted: 224 16% 15%;
+      --muted-foreground: 224 10% 68%;
+      --accent: 224 16% 18%;
+      --accent-foreground: 40 30% 92%;
+      --destructive: 2 72% 58%;
+      --destructive-foreground: 224 28% 8%;
+      --border: 224 14% 20%;
+      --input: 224 12% 32%;
+      --ring: 16 92% 64%;
+      --brand: 16 92% 60%;
+      --brand-ink: 18 95% 70%;
+      --brand-soft: 16 40% 16%;
+      color-scheme: dark;
+    }
+  }
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply scroll-smooth;
+    -webkit-text-size-adjust: 100%;
+  }
   body {
-    @apply bg-stone-100 text-foreground;
+    @apply min-h-screen bg-background font-sans text-foreground antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+    background-image: radial-gradient(
+        circle at 1px 1px,
+        hsl(var(--foreground) / 0.055) 1px,
+        transparent 0
+      );
+    background-size: 22px 22px;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply text-balance;
   }
   label {
     @apply mb-2 block text-sm font-medium;
   }
-  select {
-    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm;
-  }
   a {
-    @apply text-primary underline underline-offset-4;
+    @apply text-brand-ink underline-offset-4;
   }
-  button {
-    @apply min-h-10 rounded-md px-3 py-2 disabled:cursor-not-allowed disabled:opacity-50;
+  ::selection {
+    @apply bg-brand/25;
   }
   a:focus-visible,
   select:focus-visible,
   textarea:focus-visible,
   input:focus-visible,
-  button:focus-visible {
-    @apply outline outline-2 outline-offset-4 outline-amber-700;
+  button:focus-visible,
+  [tabindex]:focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-ring;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* A folded top-right corner appears once a card holds a saved reference. */
+  .dogear {
+    @apply relative;
+    --fold: 0px;
+    transition:
+      box-shadow 200ms ease,
+      transform 200ms ease,
+      border-color 200ms ease;
+  }
+  .dogear::before,
+  .dogear::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    width: var(--fold);
+    height: var(--fold);
+    pointer-events: none;
+    transition:
+      width 260ms cubic-bezier(0.3, 1.4, 0.5, 1),
+      height 260ms cubic-bezier(0.3, 1.4, 0.5, 1);
+  }
+  .dogear::before {
+    background: hsl(var(--background));
+    border-bottom-left-radius: 2px;
+    clip-path: polygon(0 0, 100% 0, 100% 100%);
+  }
+  .dogear::after {
+    background: linear-gradient(
+      225deg,
+      transparent 50%,
+      hsl(var(--brand)) 50%,
+      hsl(var(--brand-ink)) 100%
+    );
+    border-bottom-left-radius: 4px;
+    box-shadow: -2px 2px 4px hsl(var(--foreground) / 0.18);
+  }
+  .dogear:has([data-saved='true']) {
+    --fold: 28px;
+    @apply border-brand/50;
+  }
+  .dogear:not(:has([data-saved='true'])):hover {
+    --fold: 12px;
   }
 }

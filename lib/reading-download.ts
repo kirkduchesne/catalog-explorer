@@ -10,7 +10,7 @@ export function downloadReading(
   const link = document.createElement('a');
   try {
     link.href = url;
-    link.download = 'catalog-reading-list.json';
+    link.download = 'dogear-reading-list.json';
     document.body.appendChild(link);
     link.click();
   } finally {

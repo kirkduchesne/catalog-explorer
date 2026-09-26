@@ -108,7 +108,7 @@ const assert = require('node:assert/strict');
         .getAttribute('href'),
       '/',
     );
-    assert((await page.title()).includes('Catalog Explorer'));
+    assert((await page.title()).includes('Dogear'));
   }
   for (const path of ['/notes/0', '/notes/01', '/notes/25', '/notes/nope'])
     assert.equal((await page.goto(base + '' + path)).status(), 404);

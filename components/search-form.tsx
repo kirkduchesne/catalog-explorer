@@ -1,5 +1,7 @@
+import { Search, SlidersHorizontal } from '@/components/icons';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { NativeSelect } from '@/components/ui/native-select';
 import { categories, levels } from '@/lib/catalog';
 import { readQuery, pageUrl } from '@/lib/query';
 export function SearchForm({
@@ -16,34 +18,48 @@ export function SearchForm({
     <form
       action="/#results"
       method="get"
-      className="mb-6 grid gap-4 rounded-lg border bg-white p-5 sm:grid-cols-2 lg:grid-cols-4"
+      className="rounded-2xl border bg-card p-4 shadow-paper sm:p-6"
     >
-      <fieldset className="contents">
+      <fieldset className="grid min-w-0 gap-x-4 gap-y-5 sm:grid-cols-2 lg:grid-cols-6">
         <legend className="sr-only">
           Search and browse the reference catalog
         </legend>
-        <div>
+        <div className="min-w-0 sm:col-span-2 lg:col-span-4">
           <label htmlFor="q">Search notes</label>
-          <Input
-            id="q"
-            name="q"
-            defaultValue={query.q}
-            aria-describedby="search-help"
-          />
-          <p id="search-help" className="mt-2 text-xs">
+          <div className="relative">
+            <Search
+              aria-hidden="true"
+              className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+            />
+            <Input
+              id="q"
+              name="q"
+              type="search"
+              defaultValue={query.q}
+              placeholder="Try “labels”, “async”, or “files close”"
+              className="h-11 pl-10 text-base sm:text-sm"
+              aria-describedby="search-help"
+            />
+          </div>
+          <p id="search-help" className="mt-2 text-xs text-muted-foreground">
             Search uses the first 100 characters after normalization.
           </p>
         </div>
-        <div>
+        <div className="min-w-0 lg:col-span-2">
           <label htmlFor="mode">Match</label>
-          <select id="mode" name="mode" defaultValue={query.mode}>
+          <NativeSelect
+            id="mode"
+            name="mode"
+            defaultValue={query.mode}
+            className="h-11"
+          >
             <option value="phrase">Exact phrase</option>
             <option value="words">All words</option>
-          </select>
+          </NativeSelect>
         </div>
-        <div>
+        <div className="min-w-0 lg:col-span-2">
           <label htmlFor="category">Topic</label>
-          <select
+          <NativeSelect
             id="category"
             aria-describedby="facet-help"
             name="category"
@@ -55,11 +71,11 @@ export function SearchForm({
                 {value} ({facets.categories[value]})
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
-        <div>
+        <div className="min-w-0 lg:col-span-2">
           <label htmlFor="level">Level</label>
-          <select
+          <NativeSelect
             id="level"
             aria-describedby="facet-help"
             name="level"
@@ -71,36 +87,47 @@ export function SearchForm({
                 {value} ({facets.levels[value]})
               </option>
             ))}
-          </select>
+          </NativeSelect>
         </div>
-        <div>
+        <div className="min-w-0">
           <label htmlFor="sort">Order</label>
-          <select id="sort" name="sort" defaultValue={query.sort}>
+          <NativeSelect id="sort" name="sort" defaultValue={query.sort}>
             <option value="default">Reference order</option>
             <option value="title">Title A–Z</option>
             <option value="title-desc">Title Z–A</option>
             <option value="topic">Topic, then title</option>
-          </select>
+          </NativeSelect>
         </div>
-        <div>
+        <div className="min-w-0">
           <label htmlFor="size">Notes per page</label>
-          <select id="size" name="size" defaultValue={query.size}>
+          <NativeSelect id="size" name="size" defaultValue={query.size}>
             <option value="6">6 notes</option>
             <option value="12">12 notes</option>
-          </select>
+          </NativeSelect>
         </div>
-        <Button className="self-end" type="submit">
-          Apply filters
-        </Button>
-        {query.q ? (
-          <a href={pageUrl({ ...query, q: '' }, 1)} className="self-end">
-            Clear search only
-          </a>
-        ) : null}
-        <p id="facet-help" className="text-xs sm:col-span-2">
-          Topic counts respect search and level; level counts respect search and
-          topic.
-        </p>
+        <div className="flex flex-col-reverse gap-3 border-t pt-4 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between lg:col-span-6">
+          <p
+            id="facet-help"
+            className="flex items-start gap-2 text-xs text-muted-foreground"
+          >
+            <SlidersHorizontal
+              aria-hidden="true"
+              className="mt-px size-3.5 shrink-0"
+            />
+            Topic counts respect search and level; level counts respect search
+            and topic.
+          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            {query.q ? (
+              <Button asChild variant="ghost">
+                <a href={pageUrl({ ...query, q: '' }, 1)}>Clear search only</a>
+              </Button>
+            ) : null}
+            <Button type="submit" variant="brand" className="px-6">
+              Apply filters
+            </Button>
+          </div>
+        </div>
       </fieldset>
     </form>
   );
