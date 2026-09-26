@@ -14,8 +14,13 @@
   a {
     @apply text-primary underline underline-offset-4;
   }
+  button {
+    @apply min-h-10 rounded-md px-3 py-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
   a:focus-visible,
   select:focus-visible,
+  textarea:focus-visible,
+  input:focus-visible,
   button:focus-visible {
     @apply outline outline-2 outline-offset-4 outline-amber-700;
   }

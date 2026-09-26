@@ -1,12 +1,12 @@
 const assert = require('node:assert/strict');
 const {
   validateCatalog,
-} = require('/tmp/catalog-explorer-2025-tests/content-validation.js');
+} = require(process.env.CATALOG_TEST_LIB + '/content-validation.js');
 const {
   catalog,
   categories,
   levels,
-} = require('/tmp/catalog-explorer-2025-tests/catalog.js');
+} = require(process.env.CATALOG_TEST_LIB + '/catalog.js');
 assert.doesNotThrow(() => validateCatalog(catalog, categories, levels));
 for (const bad of [
   [catalog[0], catalog[0]],

@@ -1,4 +1,6 @@
 import './globals.css';
+import { ReadingProvider } from '@/components/reading-provider';
+import { catalog } from '@/lib/catalog';
 export const metadata = {
   title: 'Catalog Explorer',
   description: 'Browse a small programming reference shelf.',
@@ -13,7 +15,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         >
           Skip to content
         </a>
-        {children}
+        <ReadingProvider ids={catalog.map((entry) => entry.id)}>
+          {children}
+        </ReadingProvider>
       </body>
     </html>
   );

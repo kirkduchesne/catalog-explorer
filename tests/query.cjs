@@ -3,7 +3,7 @@ const {
   readQuery,
   results,
   pageUrl,
-} = require('/tmp/catalog-explorer-2025-tests/query.js');
+} = require(process.env.CATALOG_TEST_LIB + '/query.js');
 assert.equal(results({}).count, 24);
 assert.equal(results({}).entries.length, 6);
 assert.equal(results({ category: 'Python', level: 'Beginner' }).count, 3);
@@ -148,7 +148,7 @@ assert.equal(
   1
 );
 
-const source = require('/tmp/catalog-explorer-2025-tests/catalog.js').catalog;
+const source = require(process.env.CATALOG_TEST_LIB + '/catalog.js').catalog;
 const original = JSON.stringify(source);
 const forward = results({ sort: 'title', size: '12' }).entries.map(
   (x) => x.title

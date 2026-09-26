@@ -1,3 +1,6 @@
+import { ReadingSummary } from '@/components/reading-summary';
+import { ReadingDetail } from '@/components/reading-detail';
+import { BookmarkButton } from '@/components/bookmark-button';
 import { safeReturn, detailUrl } from '@/lib/navigation';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -44,6 +47,9 @@ export default async function NotePage({
       </p>
       <h1 className="mt-3 text-3xl font-semibold">{entry.title}</h1>
       <p className="mt-6 text-lg leading-relaxed">{entry.summary}</p>
+      <ReadingSummary />
+      <BookmarkButton id={entry.id} title={entry.title} />
+      <ReadingDetail id={entry.id} />
       <p className="mt-8 text-stone-600">
         Use this short reference as a starting point when reviewing your own
         code.

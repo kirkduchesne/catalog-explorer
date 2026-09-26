@@ -1,8 +1,8 @@
 const { performance } = require('node:perf_hooks');
 const assert = require('node:assert/strict');
 const os = require('node:os');
-const baseline = require('/tmp/catalog-explorer-2025-benchmark/benchmarks/baseline-query.js');
-const current = require('/tmp/catalog-explorer-2025-benchmark/lib/query.js');
+const baseline = require(process.env.CATALOG_BENCHMARK_ROOT + '/benchmarks/baseline-query.js');
+const current = require(process.env.CATALOG_BENCHMARK_ROOT + '/lib/query.js');
 const cases = [
   { q: '😀'.repeat(100) },
   { q: 'ＦＩＬＥＳ' },
