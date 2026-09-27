@@ -69,7 +69,3 @@ A repeated-query microbenchmark on the real 24-entry collection measured a media
 Content is authored locally in `lib/catalog.ts`. Reading-list persistence uses browser localStorage; there is no account or database. The pinned dependencies have known advisories; review and upgrade them before production deployment.
 
 The shadcn/ui Button and Input started from revision [`c21ecfb665214e18cd5914ea319f925cd676e786`](https://github.com/shadcn-ui/ui/tree/c21ecfb665214e18cd5914ea319f925cd676e786) and have since been restyled for the Dogear theme. The other primitives in `components/ui/` follow shadcn/ui patterns. The MIT notice is retained in `SHADCN-LICENSE.md`. Icon paths in `components/icons.tsx` come from Lucide (ISC).
-
-## Provenance
-
-Created in September 2026; earlier commit dates were intentionally assigned and do not indicate original development or publication dates.
