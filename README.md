@@ -2,7 +2,7 @@
 
 **Short notes for everyday code.** Browse 24 concise programming references, fold the corner on the ones worth coming back to, track what you've read, and move your list with reviewed JSON backups.
 
-The name comes from folding down a page corner to mark your place. Saved notes show a vermilion folded corner, and the logo is a page with its corner turned down. (The project was previously called Catalog Explorer.)
+The name comes from folding down a page corner to mark your place. Saved notes show a vermilion folded corner, and the logo is a page with its corner turned down.
 
 ![Dogear showing JavaScript references](docs/preview.png)
 
@@ -26,7 +26,7 @@ npm run dev -- --hostname 127.0.0.1
 
 Open `http://localhost:3000`. For a production build, run `npm run build` followed by `npm start -- --hostname 127.0.0.1`.
 
-The current stack is Next.js 15.5.2, React 19.1.1, TypeScript 5.9.2, Tailwind CSS 3.4.1, lucide-react 0.542.0, and Fontsource variable fonts. Local checks used Node 20.19.0; CI pins 20.19.5. Both runtime releases existed before their corresponding 2025 milestones. All 156 resolved package versions were checked against the September 1, 2025 dependency cutoff.
+The current stack is Next.js 15.5.2, React 19.1.1, TypeScript 5.9.2, Tailwind CSS 3.4.1, lucide-react 0.542.0, and Fontsource variable fonts. Local checks used Node 20.19.0; CI pins 20.19.5.
 
 ## Browse and read
 
@@ -64,15 +64,12 @@ With Playwright available externally and the production server running, execute 
 
 A repeated-query microbenchmark on the real 24-entry collection measured a median **68.093 ms before and 6.614 ms after** for 2,400 evaluations in one run. Precomputed search text and shared facet passes reduce repeated query work. These are in-process measurements, not page-load timings or evidence of a noticeable user-facing improvement. See [the reproducible benchmark](benchmarks/README.md) for rounds, parity checks, and limitations.
 
-## Scope and provenance
+## Scope and credits
 
-Content is authored locally in `lib/catalog.ts`. There is no remote directory, simulated API, account, or database. Reading-list persistence uses browser localStorage. Historical dependencies have known advisories; upgrade and review them before adapting this local reconstruction into a current hosted service.
-
-This project was created in **September 2026** as a reconstruction. Historical commit dates were intentionally assigned and do not establish original development or publication dates.
-
-- **2023:** a small server-rendered reference catalog with basic filters.
-- **2024:** detail metadata, contextual counts, Unicode handling, and accessible pagination.
-- **2025:** composed browsing, preserved reading context, framework migration, and measured query improvements.
-- **2026:** local reading progress, guarded storage, reviewed backup merging, and browser regression coverage.
+Content is authored locally in `lib/catalog.ts`. Reading-list persistence uses browser localStorage; there is no account or database. The pinned dependencies have known advisories; review and upgrade them before production deployment.
 
 The shadcn/ui Button and Input started from revision [`c21ecfb665214e18cd5914ea319f925cd676e786`](https://github.com/shadcn-ui/ui/tree/c21ecfb665214e18cd5914ea319f925cd676e786) and have since been restyled for the Dogear theme. The other primitives in `components/ui/` follow shadcn/ui patterns. The MIT notice is retained in `SHADCN-LICENSE.md`. Icon paths in `components/icons.tsx` come from Lucide (ISC).
+
+## Provenance
+
+Created in September 2026; earlier commit dates were intentionally assigned and do not indicate original development or publication dates.
